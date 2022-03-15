@@ -3,7 +3,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! bookmarkfancy#test()
-" empty body
+ return "TaGaDa :)"
 endfunction
 
 let &cpo = s:save_cpo
