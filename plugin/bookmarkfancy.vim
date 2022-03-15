@@ -3,7 +3,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! BookMarkFancyTest()
-  return bookmarkfancy#test()
+  echo bookmarkfancy#test()
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()
