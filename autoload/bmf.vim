@@ -2,7 +2,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function!
+function! bookmarkfancy#test()
 " empty body
 endfunction
 
