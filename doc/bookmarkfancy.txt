@@ -10,7 +10,7 @@ Plugin Homepage:   <https://github.com/LeKiwiDeBx/vim-bookmarkfancy>
 ===============================================================================
 CONTENTS                                                    *BookMarkFancyContents*
 
-  1.  Introduction ................. |BookMarkIntroduction|
+  1.  Introduction ................. |BookMarkFancyIntroduction|
 
   ===============================================================================
 1. INTRODUCTION                                         *BookMarkFancyIntroduction*
