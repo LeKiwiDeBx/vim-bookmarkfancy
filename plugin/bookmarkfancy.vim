@@ -1,3 +1,5 @@
+let g:loaded_bookmarksfancy = 0
+
 function! s:init()
  if g:loaded_bookmarkfancy ==# 0
     call bookmarkfancy#init()
