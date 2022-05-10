@@ -10,12 +10,12 @@ function! BookMarkFancyTest()
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()
-}}}
+"}}}
 
 " Mapping {{{
 execute "nnoremap <silent> <Plug> BookMarkFancyTest : bmt <CR>"
 
-}}}
+"}}}
 
 " Init {{{
 if has('vim_starting')
