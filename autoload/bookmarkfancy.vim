@@ -2,12 +2,12 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-if exists('g:loaded_bookmarksfancy')
+if exists('g:loaded_bookmarkfancy')
   finish
 endif
 
 function! bookmarkfancy#init()
- let g:loaded_bookmarksfancy = 1
+ let g:loaded_bookmarkfancy = 1
 endfunction
 
 function! bookmarkfancy#test()
