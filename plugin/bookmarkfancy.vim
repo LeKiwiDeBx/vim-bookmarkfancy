@@ -15,7 +15,7 @@ command! BookMarkFancyTest call BookMarkFancyTest()
 "}}}
 
 " Mapping {{{
-execute "nnoremap <silent> <Plug>BookMarkFancyTest :bt<CR>"
+execute "nnoremap <silent> <Plug>BookMarkFancyTest :BookMarkFancyTest<CR>"
 if !hasmapto("<Plug>BookMarkFancyTest")
   execute "nmap bt <Plug>BookMarkFancyTest"
 endif
