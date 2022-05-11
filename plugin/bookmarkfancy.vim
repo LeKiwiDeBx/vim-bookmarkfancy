@@ -15,7 +15,7 @@ command! BookMarkFancyTest call BookMarkFancyTest()
 "}}}
 
 " Mapping {{{
-execute "nnoremap <silent> <Plug> BookMarkFancyTest : fbt <CR>"
+execute "nmap fbt <Plug> BookMarkFancyTest"
 
 "}}}
 
