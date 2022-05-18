@@ -1,6 +1,6 @@
 let g:loaded_bookmarkfancy = 0
 "structure caractère du bookmark ----------------------------------------------------------------------------
-"{1:'char_sign_1'}                                                          ⚑ ¶              
+"{1:'char_sign_1'}                                                          ⚑ ¶             
 let g:bmfsigns={'bmfflag':'','bmfbookmark':'','bmfalt':'¶'}
 "structure couleurs -----------------------------------------------------------------------------------------
 "{"nom_couleur_bm":
@@ -13,17 +13,16 @@ let g:bmfcolors={"blue":{"fg_term":"21","fg_gui":"#0000FF"}}
 "structure du dictionnaire ----------------------------------------------------------------------------------
 "{numero_de_ligne:
 "/ {
-"/  "bmf_char":"caractère du bookmark",
-"/  "bmf_col" :"couleur",
+"/  "bmf_sign":"caractère du bookmark",
+"/  "bmf_color" :"couleur",
 "/  "bmf_txt": "texte",
 "/  "bmf_timestamp":"timestamp"
-"/ }
 "/ }
 "structure texte --------------------------------------------------------------------------------------------
 "pas de structure nécessaire a ce moment
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
-let g:bookmarkfancy= {1:{"bmf_char":"B","bmf_col" :"blue", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
+let g:bookmarkfancy= {1:{"bmf_sign":"B","bmf_color" :"blue", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
 
 function! s:init()
  if g:loaded_bookmarkfancy ==# 0
@@ -35,13 +34,27 @@ endfunction
 " Ecrire fonction CRUD Create Read Update Delete
 "Commands {{{
 function! s:BookmarkFancyCreate()
-    let currentRow = line(".")
     bookmarkfancy#create("currentRow")
+endfunction
+
+function! s:BookmarkFancyRead(line_number)
+    if (line_number > 0 && line_number <= max_key_bookmarkfancy)
+        bookmarkfancy#read(a:line_number)
+    endif
+endfunction
+
+function! s:BookmarkFancyUpdate(line_number)
+    bookmarkfancy#update(a:line_number)
+endfunction
+
+function! s:BoomarkFancyDelete(line_number)
+    bookmarkfancy#delete(a:line_number)
 endfunction
 
 function! BookMarkFancyTest()
   echo bookmarkfancy#test()
 endfunction
+
 command! BookMarkFancyTest call BookMarkFancyTest()
 "}}}
 

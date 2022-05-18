@@ -1,0 +1,22 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BookMarkFancyTest	plugin/bookmarkfancy.vim	/^command! BookMarkFancyTest call BookMarkFancyTest()$/;"	c
+BookMarkFancyTest	plugin/bookmarkfancy.vim	/^function! BookMarkFancyTest()$/;"	f
+BookmarkFancyCreate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyCreate()$/;"	f
+BookmarkFancyRead	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyRead(line_number)$/;"	f
+BookmarkFancyUpdate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyUpdate(line_number)$/;"	f
+BoomarkFancyDelete	plugin/bookmarkfancy.vim	/^function! s:BoomarkFancyDelete(line_number)$/;"	f
+bookmarkfancy#create	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#create(bmfSign, bmfColor)$/;"	f
+bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init()$/;"	f
+bookmarkfancy#test	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#test()$/;"	f
+g:bmfcolors	plugin/bookmarkfancy.vim	/^let g:bmfcolors={"blue":{"fg_term":"21","fg_gui":"#0000FF"}}$/;"	v
+g:bmfsigns	plugin/bookmarkfancy.vim	/^let g:bmfsigns={'bmfflag':'','bmfbookmark':'','bmfalt':'¶'}$/;"	v
+g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy = {}$/;"	v
+g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy= {1:{"bmf_sign":"B","bmf_color" :"blue", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}$/;"	v
+g:loaded_bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:loaded_bookmarkfancy = 0$/;"	v
+init	plugin/bookmarkfancy.vim	/^function! s:init()$/;"	f
+s:save_cpo	autoload/bookmarkfancy.vim	/^let s:save_cpo = &cpo$/;"	v
