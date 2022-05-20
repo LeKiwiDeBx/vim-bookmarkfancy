@@ -49,8 +49,14 @@ endfunction
 function! bookmarkfancy#update()
     return
 endfunction 
-" dict2list avec perte de la clé dictionnaire (keys) et retourne une liste de liste (nested list)
-function! bookmarkfancy#sort(bmfOrder)
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#sort(bmfOrder) 
+" 
+" dict2list avec perte de la clé dictionnaire (keys) 
+" bmfOrder : ordre du tri 'ASC' ou 'DESC'
+" return : une liste de liste (nested list)
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#sort(bmfOrder) "{{{
     let g:bmfList = []
     let g:bmfListBuffer = []
     let g:bmfDictBuffer = []
@@ -77,6 +83,7 @@ function! bookmarkfancy#sort(bmfOrder)
     for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
         echom "ligne : " . lRow . " color : " . lColor
     endfor
+    echom "END DEBUG"
     return g:bmfList
     elseif a:bmfOrder ==# 'DESC'
         for key in keys(g:bookmarkfancy)->sort()->reverse()
@@ -84,7 +91,7 @@ function! bookmarkfancy#sort(bmfOrder)
         endfor
     endif
 endfunction   
-    
+" }}}  
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
