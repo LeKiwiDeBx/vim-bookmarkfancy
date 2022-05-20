@@ -51,10 +51,21 @@ function! bookmarkfancy#update()
 endfunction 
 
 function! bookmarkfancy#sort(bmfOrder)
+    let g:bmfList = []
+    let g:bmfListBuffer = []
+    let g:bmfDictBuffer = []
     if a:bmfOrder ==# 'ASC'
         for key in keys(g:bookmarkfancy)->sort()
             echom g:bookmarkfancy[key]
+            let g:bmfDictBuffer = g:bookmarkfancy[key]
+            
         endfor
+    let g:bmfList->add(g:bmfDictBuffer['bmf_row'])
+    let g:bmfList->add(g:bmfDictBuffer['bmf_sign'])
+    let g:bmfList->add(g:bmfDictBuffer['bmf_color'])
+    let g:bmfList->add(g:bmfDictBuffer['bmf_txt'])
+    let g:bmfList->add(g:bmfDictBuffer['bmf_timestamp'])
+    echom g:bmfList
     elseif a:bmfOrder ==# 'DESC'
         for key in keys(g:bookmarkfancy)->sort()->reverse()
             echom g:bookmarkfancy[key]
