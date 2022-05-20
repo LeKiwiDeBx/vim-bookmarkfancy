@@ -22,8 +22,9 @@ let g:bmfcolors={"blue":{"fg_term":"21","fg_gui":"#0000FF"}}
 "pas de structure nécessaire a ce moment
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
-let g:bookmarkfancy= {1:{"bmf_sign":"B","bmf_color" :"blue", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
-
+let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
+let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
+let g:bookmarkfancy[3]= {"bmf_row":3,"bmf_sign":"B","bmf_color" :"rouge", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
 function! s:init()
  if g:loaded_bookmarkfancy ==# 0
     call bookmarkfancy#init()
