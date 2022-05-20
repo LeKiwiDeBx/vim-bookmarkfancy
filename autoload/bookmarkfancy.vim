@@ -49,23 +49,35 @@ endfunction
 function! bookmarkfancy#update()
     return
 endfunction 
-
+" dict2list avec perte de la clé dictionnaire (keys) et retourne une liste de liste (nested list)
 function! bookmarkfancy#sort(bmfOrder)
     let g:bmfList = []
     let g:bmfListBuffer = []
     let g:bmfDictBuffer = []
     if a:bmfOrder ==# 'ASC'
         for key in keys(g:bookmarkfancy)->sort()
-            echom g:bookmarkfancy[key]
+            " echom g:bookmarkfancy[key]
             let g:bmfDictBuffer = g:bookmarkfancy[key]
-            
+            let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
+                                                \ ->add(g:bmfDictBuffer['bmf_sign'])
+                                                \ ->add(g:bmfDictBuffer['bmf_color'])
+                                                \ ->add(g:bmfDictBuffer['bmf_txt'])
+                                                \ ->add(g:bmfDictBuffer['bmf_timestamp'])
+            " let g:"bmfList->extend(g:bmfListBuffer)
+            " echom g:bmfListBuffer
+            let g:bmfDictBuffer = []
+            let g:bmfList = g:bmfList->add(g:bmfListBuffer)
+            let g:bmfListBuffer = []
         endfor
-    let g:bmfList->add(g:bmfDictBuffer['bmf_row'])
-    let g:bmfList->add(g:bmfDictBuffer['bmf_sign'])
-    let g:bmfList->add(g:bmfDictBuffer['bmf_color'])
-    let g:bmfList->add(g:bmfDictBuffer['bmf_txt'])
-    let g:bmfList->add(g:bmfDictBuffer['bmf_timestamp'])
+    echom "DEBUG RESULT :" 
+    echom g:bmfListBuffer
+    echom "___________________________"
+    echom "bmfList\n :"    
     echom g:bmfList
+    for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
+        echom "ligne : " . lRow . " color : " . lColor
+    endfor
+    return g:bmfList
     elseif a:bmfOrder ==# 'DESC'
         for key in keys(g:bookmarkfancy)->sort()->reverse()
             echom g:bookmarkfancy[key]
