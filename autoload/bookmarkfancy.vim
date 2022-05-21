@@ -14,7 +14,15 @@ function! bookmarkfancy#test()
  return "This is bookmarkfancy vim plugin :)"
 endfunction
 
-function! bookmarkfancy#create(bmfSign, bmfColor)
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#create(bmfSign, bmfColor)
+"
+" crée le bmf dans le dict.
+" bmfSign : un caractère symbolique
+" bmfColor : une couleur symbolique
+" return : rien
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#create(bmfSign, bmfColor) "{{{
     let idx = 0
     let g:max_lenght = 45
     let g:currentRow = line(.)
@@ -29,26 +37,52 @@ function! bookmarkfancy#create(bmfSign, bmfColor)
                             / }
                           / }
 endfunction
+" }}}
 
-function! bookmarkfancy#design(bmfSign, bmfColor)
-    "si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#design(bmfSign, bmfColor)
+"
+" change en une passe le visuel symbole/couleur du bmf  
+" bmfSign : un caractère symbolique
+" bmfColor : une couleur du symbole
+" return : rien 
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#design(bmfSign, bmfColor) "{{{
+"si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien
     let g:currentRow = line(.)
     if g:bookmarkfancy->has_key(g:currentRow)
-        let g:bookmarkfancy["g:currentRow"] ={bmf_sign:a:bmfSign, bmf_color:a:bmfColor}
+         let g:bookmarkfancy["g:currentRow"] ={bmf_sign:a:bmfSign, bmf_color:a:bmfColor}
     endif
 endfunction
+" }}}
 
-function! bookmarkfancy#remove()
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#remove()
+"
+" enlève la ligne en cours du dict. 
+" param: aucun
+" return : vrai si il y'a bmf 
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#remove() "{{{
     let g:currentRow = line(.)
     if g:bookmarkfancy->has_key(g:currentRow)
         g:bookmarkfancy->remove(g:currentRow)
         return v:true
     endif
 endfunction
+" }}}
 
-function! bookmarkfancy#update()
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#update()
+"
+" mise a jour du bmf 
+" param: aucun
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#update() "{{{
     return
 endfunction 
+" }}}
+
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#sort(bmfOrder) 
 " 
@@ -88,10 +122,32 @@ function! bookmarkfancy#sort(bmfOrder) "{{{
     elseif a:bmfOrder ==# 'DESC'
         for key in keys(g:bookmarkfancy)->sort()->reverse()
             echom g:bookmarkfancy[key]
+            let g:bmfDictBuffer = g:bookmarkfancy[key]
+            let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
+                                                \ ->add(g:bmfDictBuffer['bmf_sign'])
+                                                \ ->add(g:bmfDictBuffer['bmf_color'])
+                                                \ ->add(g:bmfDictBuffer['bmf_txt'])
+                                                \ ->add(g:bmfDictBuffer['bmf_timestamp'])
+            " let g:"bmfList->extend(g:bmfListBuffer)
+            " echom g:bmfListBuffer
+            let g:bmfDictBuffer = []
+            let g:bmfList = g:bmfList->add(g:bmfListBuffer)
+            let g:bmfListBuffer = []
         endfor
+    echom "DEBUG RESULT :" 
+    echom g:bmfListBuffer
+    echom "___________________________"
+    echom "bmfList\n :"    
+    echom g:bmfList
+    for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
+        echom "ligne : " . lRow . " color : " . lColor
+    endfor
+    echom "END DEBUG"
+    return g:bmfList
     endif
 endfunction   
 " }}}  
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
