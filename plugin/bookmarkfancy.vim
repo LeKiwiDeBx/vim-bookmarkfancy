@@ -20,6 +20,19 @@ let g:bmfcolors={"blue":{"fg_term":"21","fg_gui":"#0000FF"}}
 "/ }
 "structure texte --------------------------------------------------------------------------------------------
 "pas de structure nécessaire a ce moment
+
+"structure combo sign/color----------------------------------------------------------------------------------
+"{"nom_du_combo":
+"  {
+"  "bmf_sign":"char du bmf",
+"  "bmf_color": "couleur du bmf"
+"  }
+"}
+let g:bmfflavors ={
+                    \ "alert":{"bmf_sign":"","bmf_color":"red"},
+                    \ "warning":{"bmfsign":"","bmf_color":"yellow"},
+                    \ "notice":{"bmf_sign":"","bmf_color":"blue"}
+                \ }
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
 let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
