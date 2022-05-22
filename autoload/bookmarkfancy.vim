@@ -56,6 +56,23 @@ function! bookmarkfancy#design(bmfSign, bmfColor) "{{{
 endfunction
 " }}}
 
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#flavour(bmfFlavour)
+"
+" change en une passe le visuel avec une saveur prédeterminée  bmf  
+" bmfFlavor : combo symbole/couleur
+" return : rien 
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#flavor(bmfFlavor) "{{{
+"si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien
+    let g:currentRow = line(.)
+    if g:bookmarkfancy->has_key(g:currentRow)
+         let g:bookmarkfancy["g:currentRow"] ={bmf_sign:a:bmfFlavor["bmf_sign"], bmf_color:a:bmfFlavor["bmf_color"]}
+    endif
+endfunction
+" }}}
+
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#remove()
 "
