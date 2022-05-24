@@ -103,6 +103,27 @@ function! bookmarkfancy#remove() "{{{
 endfunction
 " }}}
 
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#read(0 by default)
+"
+" lit une ligne particuliere ou par defaut la ligne en cours
+" param: ligne à lire
+" return: le bmf
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#read(bmfLineNumber = 0) "{{{
+    if a:bmfLineNumber ==# 0
+        let g:currentRow = line(".")
+    else
+        let g:currentRow = a:bmfLineNumber
+    endif
+    if g:bookmarkfancy->has_key(g:currentRow)
+        return g:bookmarkfancy[g:currentRow]
+    else
+        return "" 
+    endif
+endfunction
+" }}}
+
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#update()
 "

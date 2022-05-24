@@ -45,7 +45,7 @@ let g:bmfflavors ={
             \ "alert":{"bmf_sign":"","bmf_color":"red"},
             \ "warning":{"bmf_sign":"","bmf_color":"yellow"},
             \ "notice":{"bmf_sign":"","bmf_color":"blue"},
-            \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"],"bmf_color":g:bmfcolors["blue"]}
+            \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],"bmf_color":g:bmfcolors["blue"]["fg_term"]}
             \ }
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
