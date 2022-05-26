@@ -33,9 +33,9 @@ endfunction
 " function! bookmarkfancy#create(bmfSign, bmfColor)
 "
 " crée le bmf dans le dict.
-" bmfSign : un caractère symbolique
+" bmfSign :  un caractère symbolique
 " bmfColor : une couleur symbolique
-" return : rien
+" return :   rien
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#create(bmfSign = '', bmfColor = '') "{{{
     let idx = 0
@@ -58,9 +58,9 @@ endfunction
 " function! bookmarkfancy#design(bmfSign, bmfColor)
 "
 " change en une passe le visuel symbole/couleur du bmf  
-" bmfSign : un caractère symbolique
-" bmfColor : une couleur du symbole
-" return : rien 
+" bmfSign :     un caractère symbolique
+" bmfColor :    une couleur du symbole
+" return :      rien 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#design(bmfSign, bmfColor) "{{{
     "si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien

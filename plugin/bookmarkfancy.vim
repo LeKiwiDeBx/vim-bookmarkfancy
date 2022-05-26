@@ -62,8 +62,9 @@ endfunction
 "
 " Ecrire fonction CRUD Create Read Update Delete
 "Commands {{{
-function! s:BookmarkFancyCreate()
-    bookmarkfancy#create("currentRow")
+function! s:BookmarkFancyCreate(bmf_flavors = 'normal')
+    bookmarkfancy#create(g:bmfflavors[a:bmf_flavors]['bmf_sign'], g:bmfflavors[a:bmf_flavors]['bmf_color'])
+" écrire la fonction de vue sign#create(g:bookmarkfancy)
 endfunction
 
 function! s:BookmarkFancyRead(line_number)
