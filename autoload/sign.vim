@@ -10,15 +10,19 @@ endfunction
 function! bmf_sign#init()
     call bmf_sign#highlights()
     sign define Bookmarkfancy texthl=BookmarkfancySign
-    execute "sign define Bookmarkfancy text=". g:bmfflavors["normal"]["bmf_sign"]
+    "faire une fonction map "sign_" . g:bmfflavors["suffix_sign"]
+    "map(keys(copy(bmfflavors)), {_, val -> 'sign_' .. val}):
+    "let list = keys(copy(bmfflavors))->map('"sign_" .. v:val')
+    execute "sign define sign_normal text=". g:bmfflavors["normal"]["bmf_sign"]
 endfunction
 
-function! bmf_sign#highlights()
-    highlight BookmarkfancySignDefault ctermfg=g:bmfflavors["normal"]["bmf_color"] ctermbg=NONE
+function! bmf_sign#highlights(flavor_name = "normal")
+    let fg_flavor = g:bmfflavors[a:flavor_name]["bmf_color"]
+    execute "highligh BookmarkfancySignDefault ctermfg=". fg_flavor ." ctermbg=NONE"
     highlight default link BookmarkfancySign BookmarkfancySignDefault
 endfunction
 
 function! bmf_sign#place()
-
+    GetSignid(0)->sign_place('bmfSignGrp','normal', {'lnum':g:currentRow})    
 endfunction
 

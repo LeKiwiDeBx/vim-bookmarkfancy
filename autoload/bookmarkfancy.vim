@@ -72,10 +72,10 @@ endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#flavour(bmfFlavour)
+" function! bookmarkfancy#flavor(bmfFlavor) 
 "
 " change en une passe le visuel avec une saveur prédeterminée  bmf  
-" bmfFlavor : combo symbole/couleur
+" bmfFlavor : combo symbole/couleur ie: g:bmfflavors["normal"] normal est une flavor
 " return : rien 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#flavor(bmfFlavor) "{{{

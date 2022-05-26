@@ -6,19 +6,27 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 BookMarkFancyTest	plugin/bookmarkfancy.vim	/^command! BookMarkFancyTest call BookMarkFancyTest()$/;"	c
 BookMarkFancyTest	plugin/bookmarkfancy.vim	/^function! BookMarkFancyTest()$/;"	f
-BookmarkFancyCreate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyCreate()$/;"	f
+BookmarkFancyCreate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyCreate(bmf_flavors = 'normal')$/;"	f
 BookmarkFancyRead	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyRead(line_number)$/;"	f
 BookmarkFancyUpdate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyUpdate(line_number)$/;"	f
 BoomarkFancyDelete	plugin/bookmarkfancy.vim	/^function! s:BoomarkFancyDelete(line_number)$/;"	f
-bookmarkfancy#create	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#create(bmfSign, bmfColor) "{{{$/;"	f
+bmf_sign#create	autoload/sign.vim	/^function! bmf_sign#create()$/;"	f
+bmf_sign#highlights	autoload/sign.vim	/^function! bmf_sign#highlights(flavor_name = "normal")$/;"	f
+bmf_sign#init	autoload/sign.vim	/^function! bmf_sign#init()$/;"	f
+bmf_sign#place	autoload/sign.vim	/^function! bmf_sign#place()$/;"	f
+bookmarkfancy#create	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#create(bmfSign = '', bmfColor = '') "{{{$/;"	f
 bookmarkfancy#design	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#design(bmfSign, bmfColor) "{{{$/;"	f
+bookmarkfancy#flavor	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#flavor(bmfFlavor) "{{{$/;"	f
 bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init()$/;"	f
+bookmarkfancy#read	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#read(bmfLineNumber = 0) "{{{$/;"	f
 bookmarkfancy#remove	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#remove() "{{{$/;"	f
 bookmarkfancy#sort	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#sort(bmfOrder) "{{{$/;"	f
 bookmarkfancy#test	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#test()$/;"	f
+bookmarkfancy#toggle	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#toggle()$/;"	f
 bookmarkfancy#update	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#update() "{{{$/;"	f
-g:bmfcolors	plugin/bookmarkfancy.vim	/^let g:bmfcolors={"blue":{"fg_term":"21","fg_gui":"#0000FF"}}$/;"	v
-g:bmfsigns	plugin/bookmarkfancy.vim	/^let g:bmfsigns={'bmfflag':'','bmfbookmark':'','bmfalt':'¶'}$/;"	v
+g:bmfcolors	plugin/bookmarkfancy.vim	/^let g:bmfcolors={$/;"	v
+g:bmfflavors	plugin/bookmarkfancy.vim	/^let g:bmfflavors ={$/;"	v
+g:bmfsigns	plugin/bookmarkfancy.vim	/^let g:bmfsigns={$/;"	v
 g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy = {}$/;"	v
 g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}$/;"	v
 g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}$/;"	v
