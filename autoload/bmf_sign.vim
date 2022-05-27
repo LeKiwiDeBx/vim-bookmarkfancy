@@ -2,7 +2,7 @@
 "View sign.vim
 "
 "
-if !exists("g:bm_sign_init")
+if !exists("g:bmf_sign_init")
   let g:bmf_sign_init = 0
 endif
 
@@ -19,7 +19,7 @@ function! bmf_sign#init()
     "map(keys(copy(bmfflavors)), {_, val -> 'sign_' .. val}):
     "let list = keys(copy(bmfflavors))->map('"sign_" .. v:val')
     "execute "sign define sign_normal text=". g:bmfflavors["normal"]["bmf_sign"]
-endfunction
+endfunctionf
 
 function! bmf_sign#highlights(flavor_name = "normal")
    " let fg_flavor = g:bmfflavors[a:flavor_name]["bmf_color"]

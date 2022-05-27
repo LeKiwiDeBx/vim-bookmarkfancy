@@ -83,8 +83,8 @@ endfunction
 
 function! BookMarkFancyTest()
     "echo bookmarkfancy#test()
-    " echo bmf_sign#init()
-echo bookmarkfancy#sort()
+     bmf_sign#init()
+    "echo bookmarkfancy#sort()
     
 endfunction
 
