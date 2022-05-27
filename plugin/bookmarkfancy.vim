@@ -82,7 +82,10 @@ function! s:BoomarkFancyDelete(line_number)
 endfunction
 
 function! BookMarkFancyTest()
-    echo bookmarkfancy#test()
+    "echo bookmarkfancy#test()
+    " echo bmf_sign#init()
+echo bookmarkfancy#sort()
+    
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()

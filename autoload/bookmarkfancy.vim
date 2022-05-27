@@ -142,13 +142,13 @@ endfunction
 " bmfOrder : ordre du tri 'ASC' ou 'DESC'
 " return : une liste de liste (nested list)
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#sort(bmfOrder) "{{{
+function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
     let g:bmfList = []
     let g:bmfListBuffer = []
     let g:bmfDictBuffer = []
     if a:bmfOrder ==# 'ASC'
         for key in keys(g:bookmarkfancy)->sort()
-            " echom g:bookmarkfancy[key]
+            echom g:bookmarkfancy[key]
             let g:bmfDictBuffer = g:bookmarkfancy[key]
             let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
                         \ ->add(g:bmfDictBuffer['bmf_sign'])
