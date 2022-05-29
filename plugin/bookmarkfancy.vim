@@ -19,7 +19,7 @@ let g:bmfsigns={
 "    "use fg_gui
 "endif    
 let g:bmfcolors={
-            \ "blue":{"fg_term":"21","fg_gui":"#0000FF"},
+            \ "blue":{"fg_term":"62","fg_gui":"#5F5FD7"},
             \ "yellow":{"fg_term":"226","fg_gui":"#FFFF00"},
             \ "red":{"fg_term":"196","fg_gui":"#FF0000"}
             \ }
@@ -45,7 +45,8 @@ let g:bmfflavors ={
             \ "alert":{"bmf_sign":"","bmf_color":"red"},
             \ "warning":{"bmf_sign":"","bmf_color":"yellow"},
             \ "notice":{"bmf_sign":"","bmf_color":"blue"},
-            \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],"bmf_color":g:bmfcolors["blue"]["fg_term"]}
+            \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],
+                      \ "bmf_color":{"cterm":g:bmfcolors["blue"]["fg_term"],"gui":g:bmfcolors["blue"]["fg_gui"]}}
             \ }
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
@@ -64,7 +65,7 @@ endfunction
 "Commands {{{
 function! s:BookmarkFancyCreate(bmf_flavors = 'normal')
     bookmarkfancy#create(g:bmfflavors[a:bmf_flavors]['bmf_sign'], g:bmfflavors[a:bmf_flavors]['bmf_color'])
-" écrire la fonction de vue sign#create(g:bookmarkfancy)
+    " écrire la fonction de vue sign#create(g:bookmarkfancy)
 endfunction
 
 function! s:BookmarkFancyRead(line_number)
@@ -83,9 +84,10 @@ endfunction
 
 function! BookMarkFancyTest()
     "echo bookmarkfancy#test()
-     call bmf_sign#init()
+    call bmf_sign#init()
     "echo bookmarkfancy#sort()
-    
+    call bmf_sign#place() 
+
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()

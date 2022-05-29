@@ -4,16 +4,21 @@ function! bmf_sign#init()
     sign define sign_normal texthl=BookmarkfancySign
     execute "sign define sign_normal text=" . g:bmfflavors["normal"]["bmf_sign"]
 endfunction
-
+     
 function! bmf_sign#highlights(flavor_name = "normal")
     echo "Sign highlighted"
-    let fg_flavor = '"' . g:bmfflavors[a:flavor_name]["bmf_color"] . '"'
-    echom "flavor : " . fg_flavor
-    execute "highligh BookmarkfancySignDefault ctermfg=21 ctermbg=NONE"
-    highlight default link BookmarkfancySign BookmarkfancySignDefault
+    let term_fg_flavor = g:bmfflavors[a:flavor_name]["bmf_color"]["cterm"] 
+    let gui_fg_flavor = g:bmfflavors[a:flavor_name]["bmf_color"]["gui"] 
+    echom "flavor : term=" . term_fg_flavor ."  gui=".gui_fg_flavor
+    "highlight link BookmarkfancySignDefault SignColumn
+    " couleur du fond de la colonne signe: SynIDattr(hlID('SignColumn'),'bg')
+    execute "highlight BookmarkfancySign ctermfg=".. term_fg_flavor .." guifg=".. gui_fg_flavor 
+    highlight default link BookmarkfancySign SignColumn 
 endfunction
 
 function! bmf_sign#place()
     let g:currentRow = line(".")
-    call sign_place(0, 'bmfSignGrp','sign_normal', 6,{'lnum':g:currentRow, 'priority' : 100})    
-endfunction"
+    "execute \" \""sign place 1 line=7 name=sign_normal"
+    let id = sign_place(0, '','sign_normal', 6,{'lnum':g:currentRow})  
+    echom "id sign : " . id
+endfunction
