@@ -37,7 +37,7 @@ endfunction
 " bmfColor : une couleur symbolique
 " return :   rien
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#create(bmfSign = '', bmfColor = '') "{{{
+function! bookmarkfancy#create(bmfSignId, bmfSign = '', bmfColor = '') "{{{
     let idx = 0
     let g:max_lenght = 45
     let g:currentRow = line(".")
@@ -45,6 +45,7 @@ function! bookmarkfancy#create(bmfSign = '', bmfColor = '') "{{{
     let g:currentText = g:currentRow->getline()->strcharpart(idx, g:max_lenght)
     let g:bookmarkfancy = { g:currentRow: 
                 \              {'bmf_row':g:currentRow,
+                \               'bmf_sign_id': a:bmfSignId,
                 \               'bmf_sign':a:bmfSign, 
                 \               'bmf_color':a:bmfColor,
                 \               'bmf_txt':g:currentText,
@@ -124,7 +125,7 @@ function! bookmarkfancy#read(bmfLineNumber = 0) "{{{
 endfunction
 " }}}
 
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" ~~~~~~~~~~~~~~~~~~~~~0~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#update()
 "
 " mise a jour du bmf 

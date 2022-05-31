@@ -46,7 +46,7 @@ let g:bmfflavors ={
             \ "warning":{"bmf_sign":"","bmf_color":"yellow"},
             \ "notice":{"bmf_sign":"","bmf_color":"blue"},
             \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],
-                      \ "bmf_color":{"cterm":g:bmfcolors["blue"]["fg_term"],"gui":g:bmfcolors["blue"]["fg_gui"]}}
+            \ "bmf_color":{"cterm":g:bmfcolors["blue"]["fg_term"],"gui":g:bmfcolors["blue"]["fg_gui"]}}
             \ }
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
@@ -63,8 +63,8 @@ endfunction
 "
 " Ecrire fonction CRUD Create Read Update Delete
 "Commands {{{
-function! s:BookmarkFancyCreate(bmf_flavors = 'normal')
-    bookmarkfancy#create(g:bmfflavors[a:bmf_flavors]['bmf_sign'], g:bmfflavors[a:bmf_flavors]['bmf_color'])
+function! s:BookmarkFancyCreate(bmf_sign_id, bmf_flavor = 'normal')
+    bookmarkfancy#create(a:bmf_sign_id, g:bmfflavors[a:bmf_flavor]['bmf_sign'], g:bmfflavors[a:bmf_flavor]['bmf_color'])
     " écrire la fonction de vue sign#create(g:bookmarkfancy)
 endfunction
 
@@ -99,7 +99,14 @@ if !hasmapto("<Plug>BookMarkFancyTest")
     execute "nmap bt <Plug>BookMarkFancyTest"
 endif
 "}}}
+" refresh_update
+"
+function! s:refresh_update()
+    echom "refresh_update"
+    call bmf_sign#sync()
+endfunction
 
+autocmd BufWritePost * call s:refresh_update()
 " Init {{{
 if has('vim_starting')
     autocmd VimEnter * call s:init()
