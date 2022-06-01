@@ -50,9 +50,12 @@ let g:bmfflavors ={
             \ }
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
-let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
-let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
-let g:bookmarkfancy[3]= {"bmf_row":3,"bmf_sign":"B","bmf_color" :"rouge", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
+"let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign_id":18,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
+"let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign_id":19,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
+"let g:bookmarkfancy[3]= {"bmf_row":3,"bmf_sign_id":20,"bmf_sign":"B","bmf_color" :"rouge", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
+
+"liste des dictionnaire des bookmarkfancies
+let g:bookmarkfancy_list = []
 
 function! s:init()
     if g:loaded_bookmarkfancy ==# 0

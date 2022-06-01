@@ -52,6 +52,7 @@ function! bookmarkfancy#create(bmfSignId, bmfSign = '', bmfColor = '') "{{{
                 \               'bmf_timestamp':g:timeStamp
                 \              }
                 \         }
+    return g:bookmarkfancy
 endfunction
 " }}}
 

@@ -33,10 +33,11 @@ endfunction
 
 function! bmf_sign#place(bmf_flavor = 'normal')
     let g:currentRow = line(".")
+    let g:bmf_create = []
     "execute \" \""sign place 1 line=7 name=sign_normal"
     let g:buf = bufnr(expand("%:p")) 
     let id = sign_place(0, '','sign_normal', g:buf, {'lnum':g:currentRow})  
     echom "id sign : " . id
     "# TODO: mise a jour dictionnaire bookmarkfancy dans bookmarkfancy.vim 
-    g:bookmarkfancy#create(id)
+    let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(id))
 endfunction
