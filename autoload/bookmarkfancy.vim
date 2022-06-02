@@ -137,68 +137,83 @@ function! bookmarkfancy#update() "{{{
 endfunction 
 " }}}
 
+function CompareRow(row1, row2) 
+    "echo a:row1[0]
+    return a:row1[0]['bmf_row'] == a:row2[0]['bmf_row']? 0:a:row1[0]['bmf_row'] >a:row2[0]['bmf_row']? 1:-1
+endfunction
+
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#sort(bmfOrder) 
-" 
+"  /!\ values(bookmarkfancy_list[0])[0]['bmf_row'] donne la ligne du bookmark
+"  à trier avec la fonction sort(..., n) n=tri numerique 1 < 11 !
+"  ou avec une Funcref pour trier sur bmf_row
 " dict2list avec perte de la clé dictionnaire (keys) 
 " bmfOrder : ordre du tri 'ASC' ou 'DESC'
 " return : une liste de liste (nested list)
+" /!\ ALGO A REVOIR AVEC LA NVELLE STRUCT bookmarkfancy_list /!\
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
-    let g:bmfList = []
-    let g:bmfListBuffer = []
-    let g:bmfDictBuffer = []
-    if a:bmfOrder ==# 'ASC'
-        for key in keys(g:bookmarkfancy)->sort()
-            echom g:bookmarkfancy[key]
-            let g:bmfDictBuffer = g:bookmarkfancy[key]
-            let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
-                        \ ->add(g:bmfDictBuffer['bmf_sign'])
-                        \ ->add(g:bmfDictBuffer['bmf_color'])
-                        \ ->add(g:bmfDictBuffer['bmf_txt'])
-                        \ ->add(g:bmfDictBuffer['bmf_timestamp'])
-            " let g:"bmfList->extend(g:bmfListBuffer)
-            " echom g:bmfListBuffer
-            let g:bmfDictBuffer = []
-            let g:bmfList = g:bmfList->add(g:bmfListBuffer)
-            let g:bmfListBuffer = []
-        endfor
-        echom "DEBUG RESULT :" 
-        echom g:bmfListBuffer
-        echom "___________________________"
-        echom "bmfList\n :"    
-        echom g:bmfList
-        for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
-            echom "ligne : " . lRow . " color : " . lColor
-        endfor
-        echom "END DEBUG"
-        return g:bmfList
-    elseif a:bmfOrder ==# 'DESC'
-        for key in keys(g:bookmarkfancy)->sort()->reverse()
-            echom g:bookmarkfancy[key]
-            let g:bmfDictBuffer = g:bookmarkfancy[key]
-            let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
-                        \ ->add(g:bmfDictBuffer['bmf_sign'])
-                        \ ->add(g:bmfDictBuffer['bmf_color'])
-                        \ ->add(g:bmfDictBuffer['bmf_txt'])
-                        \ ->add(g:bmfDictBuffer['bmf_timestamp'])
-            " let g:"bmfList->extend(g:bmfListBuffer)
-            " echom g:bmfListBuffer
-            let g:bmfDictBuffer = []
-            let g:bmfList = g:bmfList->add(g:bmfListBuffer)
-            let g:bmfListBuffer = []
-        endfor
-        echom "DEBUG RESULT :" 
-        echom g:bmfListBuffer
-        echom "___________________________"
-        echom "bmfList\n :"    
-        echom g:bmfList
-        for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
-            echom "ligne : " . lRow . " color : " . lColor
-        endfor
-        echom "END DEBUG"
-        return g:bmfList
-    endif
+    let g:dic_row_list = []
+    for dic_row in g:bookmarkfancy_list    
+        call add(g:dic_row_list, values(dic_row)) 
+    endfor
+    for row in sort(g:dic_row_list, "CompareRow")
+        echom row[0]['bmf_row']
+    endfor
+    " let g:bmfList = []
+    " let g:bmfListBuffer = []
+    " let g:bmfDictBuffer = []
+    " if a:bmfOrder ==# 'ASC'
+    "     for key in keys(g:bookmarkfancy)->sort()
+    "         echom g:bookmarkfancy[key]
+    "         let g:bmfDictBuffer = g:bookmarkfancy[key]
+    "         let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_sign'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_color'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_txt'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_timestamp'])
+    "         \" let g:"bmfList->extend(g:bmfListBuffer)
+    "         " echom g:bmfListBuffer
+    "         let g:bmfDictBuffer = []
+    "         let g:bmfList = g:bmfList->add(g:bmfListBuffer)
+    "         let g:bmfListBuffer = []
+    "     endfor
+    "     echom \"DEBUG RESULT :" 
+    "     echom g:bmfListBuffer
+    "     echom \"___________________________"
+    "     echom \"bmfList\n :"    
+    "     echom g:bmfList
+    "     for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
+    "         echom \"ligne : \" . lRow . \" color : " . lColor
+    "     endfor
+    "     echom \"END DEBUG"
+    "     return g:bmfList
+    " elseif a:bmfOrder ==# 'DESC'
+    "     for key in keys(g:bookmarkfancy)->sort()->reverse()
+    "         echom g:bookmarkfancy[key]
+    "         let g:bmfDictBuffer = g:bookmarkfancy[key]
+    "         let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_sign'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_color'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_txt'])
+    "                     \ ->add(g:bmfDictBuffer['bmf_timestamp'])
+    "         \" let g:"bmfList->extend(g:bmfListBuffer)
+    "         " echom g:bmfListBuffer
+    "         let g:bmfDictBuffer = []
+    "         let g:bmfList = g:bmfList->add(g:bmfListBuffer)
+    "         let g:bmfListBuffer = []
+    "     endfor
+    "     echom \"DEBUG RESULT :" 
+    "     echom g:bmfListBuffer
+    "     echom \"___________________________"
+    "     echom \"bmfList\n :"    
+    "     echom g:bmfList
+    "     for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
+    "         echom \"ligne : \" . lRow . \" color : " . lColor
+    "     endfor
+    "     echom \"END DEBUG"
+    "     return g:bmfList
+    " endif
 endfunction   
 " }}}  
 
