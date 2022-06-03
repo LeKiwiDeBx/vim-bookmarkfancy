@@ -154,12 +154,17 @@ endfunction
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
     let g:dic_row_list = []
+    let g:bmfList = []
+    let g:bmfDic = []
     for dic_row in g:bookmarkfancy_list    
-        call add(g:dic_row_list, values(dic_row)) 
+        let g:dic_row_list = g:dic_row_list->add(values(dic_row)) 
     endfor
-    for row in sort(g:dic_row_list, "CompareRow")
-        echom row[0]['bmf_row']
+    let g:bmfDic = g:dic_row_list->sort("CompareRow")
+    for row in a:bmfOrder ==# 'ASC'? g:bmfDic : g:bmfDic->reverse() 
+        let g:bmfList = g:bmfList->add(row[0])
     endfor
+    echom g:bmfList
+    return g:bmfList
     " let g:bmfList = []
     " let g:bmfListBuffer = []
     " let g:bmfDictBuffer = []
