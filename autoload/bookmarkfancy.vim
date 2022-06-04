@@ -43,12 +43,18 @@ function! bookmarkfancy#create(bmfSignId, bmfSign = '', bmfColor = '') "{{{
     let g:currentRow = line(".")
     let g:timeStamp = localtime()
     let g:currentText = g:currentRow->getline()->strcharpart(idx, g:max_lenght)
-    let g:bookmarkfancy = { g:currentRow: 
+    let g:currentBuffer = bufnr()
+    let g:currentFile = expand("%:p")    
+    let g:currentStatus = 1 "status = 0: disabled, 1: enabled"
+    let g:bookmarkfancy = {g:currentRow: 
                 \              {'bmf_row':g:currentRow,
                 \               'bmf_sign_id': a:bmfSignId,
                 \               'bmf_sign':a:bmfSign, 
                 \               'bmf_color':a:bmfColor,
                 \               'bmf_txt':g:currentText,
+                \               'bmf_buffer':g:currentBuffer,
+                \               'bmf_file':g:currentFile,
+                \               'bmf_status':g:currentStatus,
                 \               'bmf_timestamp':g:timeStamp
                 \              }
                 \         }
@@ -99,9 +105,9 @@ endfunction
 function! bookmarkfancy#remove() "{{{
     let g:currentRow = line(".")
     if g:bookmarkfancy->has_key(g:currentRow)
-        g:bookmarkfancy->remove(g:currentRow)
-        return v:true
+        return remove(g:bookmarkfancy, g:currentRow)
     endif
+    return v:false
 endfunction
 " }}}
 
@@ -113,20 +119,33 @@ endfunction
 " return: le bmf
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#read(bmfLineNumber = 0) "{{{
-    if a:bmfLineNumber ==# 0
-        let g:currentRow = line(".")
-    else
-        let g:currentRow = a:bmfLineNumber
+    let g:currentRow = a:bmfLineNumber ==# 0 ? line(".")  : a:bmfLineNumber 
+    if !g:bookmarkfancy_list->empty()
+        for dic_row in g:bookmarkfancy_list 
+            if !dic_row)->empty()
+                if values(dic_row)[0]['bmf_row'] ==# g:currentRow 
+                    return values(dic_row)[0]
+                endif    
+            endif
+        endfor
     endif
-    if g:bookmarkfancy->has_key(g:currentRow)
-        return g:bookmarkfancy[g:currentRow]
-    else
-        return "" 
-    endif
+    return v:false
 endfunction
 " }}}
 
-" ~~~~~~~~~~~~~~~~~~~~~0~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#view(how)
+"
+" affiche dans quick la liste des bookmarks
+" param: how quel type affichage complet(tous les fichiers), partiel, actif/inactif
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#view(how = 'ALL')
+   "h: setqflist() à partir bookmarkfancy_list m.a.j. par rapport sign add/delete
+endfunction
+
+
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#update()
 "
 " mise a jour du bmf 
@@ -144,13 +163,9 @@ endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#sort(bmfOrder) 
-"  /!\ values(bookmarkfancy_list[0])[0]['bmf_row'] donne la ligne du bookmark
-"  à trier avec la fonction sort(..., n) n=tri numerique 1 < 11 !
-"  ou avec une Funcref pour trier sur bmf_row
 " dict2list avec perte de la clé dictionnaire (keys) 
 " bmfOrder : ordre du tri 'ASC' ou 'DESC'
 " return : une liste de liste (nested list)
-" /!\ ALGO A REVOIR AVEC LA NVELLE STRUCT bookmarkfancy_list /!\
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
     let g:dic_row_list = []
@@ -165,60 +180,6 @@ function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
     endfor
     echom g:bmfList
     return g:bmfList
-    " let g:bmfList = []
-    " let g:bmfListBuffer = []
-    " let g:bmfDictBuffer = []
-    " if a:bmfOrder ==# 'ASC'
-    "     for key in keys(g:bookmarkfancy)->sort()
-    "         echom g:bookmarkfancy[key]
-    "         let g:bmfDictBuffer = g:bookmarkfancy[key]
-    "         let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_sign'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_color'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_txt'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_timestamp'])
-    "         \" let g:"bmfList->extend(g:bmfListBuffer)
-    "         " echom g:bmfListBuffer
-    "         let g:bmfDictBuffer = []
-    "         let g:bmfList = g:bmfList->add(g:bmfListBuffer)
-    "         let g:bmfListBuffer = []
-    "     endfor
-    "     echom \"DEBUG RESULT :" 
-    "     echom g:bmfListBuffer
-    "     echom \"___________________________"
-    "     echom \"bmfList\n :"    
-    "     echom g:bmfList
-    "     for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
-    "         echom \"ligne : \" . lRow . \" color : " . lColor
-    "     endfor
-    "     echom \"END DEBUG"
-    "     return g:bmfList
-    " elseif a:bmfOrder ==# 'DESC'
-    "     for key in keys(g:bookmarkfancy)->sort()->reverse()
-    "         echom g:bookmarkfancy[key]
-    "         let g:bmfDictBuffer = g:bookmarkfancy[key]
-    "         let g:bmfListBuffer = g:bmfListBuffer->add(g:bmfDictBuffer['bmf_row'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_sign'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_color'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_txt'])
-    "                     \ ->add(g:bmfDictBuffer['bmf_timestamp'])
-    "         \" let g:"bmfList->extend(g:bmfListBuffer)
-    "         " echom g:bmfListBuffer
-    "         let g:bmfDictBuffer = []
-    "         let g:bmfList = g:bmfList->add(g:bmfListBuffer)
-    "         let g:bmfListBuffer = []
-    "     endfor
-    "     echom \"DEBUG RESULT :" 
-    "     echom g:bmfListBuffer
-    "     echom \"___________________________"
-    "     echom \"bmfList\n :"    
-    "     echom g:bmfList
-    "     for [lRow, lSign,lColor,lTxt,lTimestamp] in g:bmfList
-    "         echom \"ligne : \" . lRow . \" color : " . lColor
-    "     endfor
-    "     echom \"END DEBUG"
-    "     return g:bmfList
-    " endif
 endfunction   
 " }}}  
 

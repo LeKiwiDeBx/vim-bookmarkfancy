@@ -39,5 +39,6 @@ function! bmf_sign#place(bmf_flavor = 'normal')
     let id = sign_place(0, '','sign_normal', g:buf, {'lnum':g:currentRow})  
     echom "id sign : " . id
     "# TODO: mise a jour dictionnaire bookmarkfancy dans bookmarkfancy.vim 
-    let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(id))
+    return g:bookmarkfancy_list->add(bookmarkfancy#create(id))
+    "let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(id))
 endfunction
