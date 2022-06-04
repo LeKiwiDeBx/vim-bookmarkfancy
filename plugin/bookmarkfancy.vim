@@ -85,6 +85,10 @@ function! s:BoomarkFancyDelete(line_number)
     bookmarkfancy#delete(a:line_number)
 endfunction
 
+function! s:BookmarkFancyView(how = 'ALL')
+    bookmarkfancy#view(a:how)
+endfunction
+
 function! BookMarkFancyTest()
     "echo bookmarkfancy#test()
     call bmf_sign#init()
