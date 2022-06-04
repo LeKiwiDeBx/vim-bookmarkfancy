@@ -122,7 +122,7 @@ function! bookmarkfancy#read(bmfLineNumber = 0) "{{{
     let g:currentRow = a:bmfLineNumber ==# 0 ? line(".")  : a:bmfLineNumber 
     if !g:bookmarkfancy_list->empty()
         for dic_row in g:bookmarkfancy_list 
-            if !dic_row)->empty()
+            if !dic_row->empty()
                 if values(dic_row)[0]['bmf_row'] ==# g:currentRow 
                     return values(dic_row)[0]
                 endif    
