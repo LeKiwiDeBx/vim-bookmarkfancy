@@ -81,8 +81,14 @@ function! s:BookmarkFancyUpdate(line_number)
     bookmarkfancy#update(a:line_number)
 endfunction
 
-function! s:BoomarkFancyDelete(line_number)
-    bookmarkfancy#delete(a:line_number)
+function! BookmarkFancyRemove(line_number = 0)
+    let bmf_remove = bookmarkfancy#remove(a:line_number)
+    echom bmf_remove
+    for bmf_sign in g:sign_list
+        echom bmf_sign
+        "unplace sign if g:sign_list['lnum'] == bmf_remove['bmf_row']
+        let g:sign_last_remove =  sign_unplace('*',{"id" : bmf_remove['bmf_sign_id']})
+    endfor
 endfunction
 
 function! s:BookmarkFancyView(how = 'ALL')
@@ -94,7 +100,6 @@ function! BookMarkFancyTest()
     call bmf_sign#init()
     "echo bookmarkfancy#sort()
     call bmf_sign#place() 
-
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()

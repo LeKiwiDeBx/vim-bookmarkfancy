@@ -102,8 +102,8 @@ endfunction
 " param: aucun
 " return : vrai si il y'a bmf 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#remove() "{{{
-    let g:currentRow = line(".")
+function! bookmarkfancy#remove(lnum = 0) "{{{
+    let g:currentRow = a:lnum ==# ''? line(".") : a:lnum
     if g:bookmarkfancy->has_key(g:currentRow)
         return remove(g:bookmarkfancy, g:currentRow)
     endif
@@ -143,8 +143,6 @@ function! bookmarkfancy#view(how = 'ALL')
    "h: setqflist() à partir bookmarkfancy_list m.a.j. par rapport sign add/delete
 endfunction
 
-
-
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#update()
 "
@@ -152,7 +150,7 @@ endfunction
 " param: aucun
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#update() "{{{
-    return
+    return 1
 endfunction 
 " }}}
 

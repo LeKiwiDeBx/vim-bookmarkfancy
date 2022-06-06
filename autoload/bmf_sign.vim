@@ -29,6 +29,7 @@ function! bmf_sign#sync(buf_name ='')
     "liste de dictionnaires de signe du buffer
     echom " Liste de dictionnaires de signes = " 
     echom g:sign_list
+    echom g:bookmarkfancy_list
 endfunction 
 
 function! bmf_sign#place(bmf_flavor = 'normal')
