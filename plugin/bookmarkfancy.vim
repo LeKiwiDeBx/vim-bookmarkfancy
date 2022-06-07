@@ -82,12 +82,20 @@ function! s:BookmarkFancyUpdate(line_number)
 endfunction
 
 function! BookmarkFancyRemove(line_number = 0)
-    let bmf_remove = bookmarkfancy#remove(a:line_number)
-    echom bmf_remove
+    "let bmf_remove = bookmarkfancy#remove(a:line_number)
+  let g:currentRow = a:line_number ==# 0 ? line(".") : a:line_number
+  let buffer = bufnr()
+    "echom bmf_remove
     for bmf_sign in g:sign_list
-        echom bmf_sign
-        "unplace sign if g:sign_list['lnum'] == bmf_remove['bmf_row']
-        let g:sign_last_remove =  sign_unplace('*',{"id" : bmf_remove['bmf_sign_id']})
+        for bmf_remove in g:bookmarkfancy_list
+            echom values(bmf_remove)[0]
+            echom bmf_sign
+            let g:bmf_remove_id = values(bmf_remove)[0]['bmf_sign_id'] 
+            let g:bmf_remove_row = values(bmf_remove)[0]['bmf_row']
+            if bmf_sign['id'] ==# g:bmf_remove_id && g:bmf_remove_row ==# g:currentRow 
+                let g:sign_last_remove =  sign_unplace('*',{"buffer":buffer,"id" : g:bmf_remove_id})
+            endif
+        endfor
     endfor
 endfunction
 

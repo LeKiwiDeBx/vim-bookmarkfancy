@@ -103,7 +103,9 @@ endfunction
 " return : vrai si il y'a bmf 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#remove(lnum = 0) "{{{
-    let g:currentRow = a:lnum ==# ''? line(".") : a:lnum
+  "/!\ Reécrire en fonction de bookmarkfancy_list values(bmf_remove)[0]['bmf_row']
+  "/!\ Voir function! BookmarkFancyRemove() dans /plugin pour for...in
+  let g:currentRow = a:lnum ==# ''? line(".") : a:lnum
     if g:bookmarkfancy->has_key(g:currentRow)
         return remove(g:bookmarkfancy, g:currentRow)
     endif
@@ -177,6 +179,7 @@ function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
         let g:bmfList = g:bmfList->add(row[0])
     endfor
     echom g:bmfList
+  bookmarkfancy#init
     return g:bmfList
 endfunction   
 " }}}  
