@@ -19,9 +19,12 @@ let g:bmfsigns={
 "    "use fg_gui
 "endif    
 let g:bmfcolors={
-            \ "blue":{"fg_term":"62","fg_gui":"#5F5FD7"},
-            \ "yellow":{"fg_term":"226","fg_gui":"#FFFF00"},
-            \ "red":{"fg_term":"196","fg_gui":"#FF0000"}
+            \ "default":{"fg_term":"black","fg_gui":"#000000"},
+            \ "normal":{"fg_term":"25","fg_gui":"#005FAF"},
+            \ "notice":{"fg_term":"25","fg_gui":"#005FAF"},
+            \ "warning":{"fg_term":"190","fg_gui":"#DFFF00"},
+            \ "alert":{"fg_term":"160","fg_gui":"#D70000"},
+            \ "pass":{"fg_term":"34","fg_gui":"#00AF00"}
             \ }
 "structure du dictionnaire ----------------------------------------------------------------------------------
 "{numero_de_ligne:
@@ -41,21 +44,25 @@ let g:bmfcolors={
 "  "bmf_color": "couleur du bmf"
 "  }
 "}
+"TODO completer alert,warning,notice avec la syntaxe style normal adaptée
+"/!\ differencier pour les quatres style fg_gui et fg_term /!\
+if &term=~'xterm'
+    let g:bmf_fg= "fg_gui"
+else
+    let g:bmf_fg = "fg_term"
+endif
 let g:bmfflavors ={
-            \ "alert":{"bmf_sign":"","bmf_color":"red"},
-            \ "warning":{"bmf_sign":"","bmf_color":"yellow"},
-            \ "notice":{"bmf_sign":"","bmf_color":"blue"},
-            \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],
-            \ "bmf_color":{"cterm":g:bmfcolors["blue"]["fg_term"],"gui":g:bmfcolors["blue"]["fg_gui"]}}
+            \ "alert":{"bmf_sign":g:bmfsigns["bmf_star"]["bmf_bookmark"],"bmf_color":g:bmfcolors["alert"][g:bmf_fg]},
+            \ "warning":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],"bmf_color":g:bmfcolors["warning"][g:bmf_fg]},
+            \ "notice":{"bmf_sign":g:bmfsigns["bmf_underline"]["bmf_bookmark"],"bmf_color":g:bmfcolors["normal"][g:bmf_fg]},
+            \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],"bmf_color":g:bmfcolors["normal"][g:bmf_fg]},
+            \ "pass":{"bmf_sign":g:bmfsigns["bmf_star"]["bmf_bookmark"],"bmf_color":g:bmfcolors["pass"][g:bmf_fg]}
             \ }
 let g:bookmarkfancy = {}
 "test de la structure ---------------------------------------------------------------------------------------
-"let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign_id":18,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
-"let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign_id":19,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
-"let g:bookmarkfancy[3]= {"bmf_row":3,"bmf_sign_id":20,"bmf_sign":"B","bmf_color" :"rouge", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
-
-"liste des dictionnaire des bookmarkfancies
-let g:bookmarkfancy_list = []
+let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
+let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
+let g:bookmarkfancy[3]= {"bmf_row":3,"bmf_sign":"B","bmf_color" :"rouge", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
 
 function! s:init()
     if g:loaded_bookmarkfancy ==# 0
@@ -66,8 +73,12 @@ endfunction
 "
 " Ecrire fonction CRUD Create Read Update Delete
 "Commands {{{
-function! s:BookmarkFancyCreate(bmf_sign_id, bmf_flavor = 'normal')
-    bookmarkfancy#create(a:bmf_sign_id, g:bmfflavors[a:bmf_flavor]['bmf_sign'], g:bmfflavors[a:bmf_flavor]['bmf_color'])
+function! BookMarkFancyCreate(bmf_flavors = 'normal')
+    call bmf_sign#init()
+    let l:bmf_create = bookmarkfancy#create(bmf_sign#place(a:bmf_flavors),
+                                          \ g:bmfflavors[a:bmf_flavors]['bmf_sign'],
+                                          \ g:bmfflavors[a:bmf_flavors]['bmf_color'])
+    call add(g:bookmarkfancy_list, l:bmf_create)
     " écrire la fonction de vue sign#create(g:bookmarkfancy)
 endfunction
 
@@ -81,36 +92,20 @@ function! s:BookmarkFancyUpdate(line_number)
     bookmarkfancy#update(a:line_number)
 endfunction
 
-function! BookmarkFancyRemove(line_number = 0)
-    "let bmf_remove = bookmarkfancy#remove(a:line_number)
-  let g:currentRow = a:line_number ==# 0 ? line(".") : a:line_number
-  let buffer = bufnr()
-    "echom bmf_remove
-    for bmf_sign in g:sign_list
-        for bmf_remove in g:bookmarkfancy_list
-            echom values(bmf_remove)[0]
-            echom bmf_sign
-            let g:bmf_remove_id = values(bmf_remove)[0]['bmf_sign_id'] 
-            let g:bmf_remove_row = values(bmf_remove)[0]['bmf_row']
-            if bmf_sign['id'] ==# g:bmf_remove_id && g:bmf_remove_row ==# g:currentRow 
-                let g:sign_last_remove =  sign_unplace('*',{"buffer":buffer,"id" : g:bmf_remove_id})
-            endif
-        endfor
-    endfor
-endfunction
-
-function! s:BookmarkFancyView(how = 'ALL')
-    bookmarkfancy#view(a:how)
+function! s:BoomarkFancyDelete(line_number)
+    bookmarkfancy#delete(a:line_number)
 endfunction
 
 function! BookMarkFancyTest()
     "echo bookmarkfancy#test()
     call bmf_sign#init()
     "echo bookmarkfancy#sort()
-    call bmf_sign#place() 
+    "let l:id = bmf_sign#place()
+    let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(bmf_sign#place())) 
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()
+command! BookMarkFancyCreate call BookMarkFancyCreate()
 "}}}
 
 " Mapping {{{
@@ -118,15 +113,12 @@ execute "nnoremap <silent> <Plug>BookMarkFancyTest :BookMarkFancyTest<CR>"
 if !hasmapto("<Plug>BookMarkFancyTest")
     execute "nmap bt <Plug>BookMarkFancyTest"
 endif
+execute "nnoremap <silent> <Plug>BookMarkFancyCreate :BookMarkFancyCreate<CR>"
+if !hasmapto("<Plug>BookMarkFancyCreate")
+    execute "nmap bc <Plug>BookMarkFancyCreate"
+endif
 "}}}
-" refresh_update
-"
-function! s:refresh_update()
-    echom "refresh_update"
-    call bmf_sign#sync()
-endfunction
 
-autocmd BufWritePost * call s:refresh_update()
 " Init {{{
 if has('vim_starting')
     autocmd VimEnter * call s:init()

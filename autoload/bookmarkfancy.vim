@@ -8,6 +8,7 @@ set cpo&vim
 
 function! bookmarkfancy#init()
     let g:loaded_bookmarkfancy = 1
+    let g:bookmarkfancy_list = []
 endfunction
 
 function! bookmarkfancy#test()
@@ -37,20 +38,23 @@ endfunction
 " bmfColor : une couleur symbolique
 " return :   rien
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#create(bmfSignId, bmfSign = '', bmfColor = '') "{{{
+function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{
     let idx = 0
     let g:max_lenght = 45
     let g:currentRow = line(".")
-    let g:timeStamp = localtime()
+    let bmfSign = a:bmf_sign->empty() ? g:bmfflavors["normal"]["bmf_sign"] :  a:bmf_sign
+    let bmfColor = a:bmf_color->empty() ? g:bmfflavors["normal"]["bmf_color"] : a:bmf_color 
+    " echom "/nbmfColor du create : " .. bmfColor
     let g:currentText = g:currentRow->getline()->strcharpart(idx, g:max_lenght)
     let g:currentBuffer = bufnr()
     let g:currentFile = expand("%:p")    
     let g:currentStatus = 1 "status = 0: disabled, 1: enabled"
+    let g:timeStamp = localtime()
     let g:bookmarkfancy = {g:currentRow: 
                 \              {'bmf_row':g:currentRow,
                 \               'bmf_sign_id': a:bmfSignId,
-                \               'bmf_sign':a:bmfSign, 
-                \               'bmf_color':a:bmfColor,
+                \               'bmf_sign':bmfSign, 
+                \               'bmf_color':bmfColor,
                 \               'bmf_txt':g:currentText,
                 \               'bmf_buffer':g:currentBuffer,
                 \               'bmf_file':g:currentFile,
@@ -103,9 +107,9 @@ endfunction
 " return : vrai si il y'a bmf 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#remove(lnum = 0) "{{{
-  "/!\ Reécrire en fonction de bookmarkfancy_list values(bmf_remove)[0]['bmf_row']
-  "/!\ Voir function! BookmarkFancyRemove() dans /plugin pour for...in
-  let g:currentRow = a:lnum ==# ''? line(".") : a:lnum
+    "/!\ Reécrire en fonction de bookmarkfancy_list values(bmf_remove)[0]['bmf_row']
+    "/!\ Voir function! BookmarkFancyRemove() dans /plugin pour for...in
+    let g:currentRow = a:lnum ==# ''? line(".") : a:lnum
     if g:bookmarkfancy->has_key(g:currentRow)
         return remove(g:bookmarkfancy, g:currentRow)
     endif
@@ -142,7 +146,7 @@ endfunction
 " param: how quel type affichage complet(tous les fichiers), partiel, actif/inactif
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#view(how = 'ALL')
-   "h: setqflist() à partir bookmarkfancy_list m.a.j. par rapport sign add/delete
+    "h: setqflist() à partir bookmarkfancy_list m.a.j. par rapport sign add/delete
 endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -179,7 +183,7 @@ function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
         let g:bmfList = g:bmfList->add(row[0])
     endfor
     echom g:bmfList
-  bookmarkfancy#init
+    bookmarkfancy#init
     return g:bmfList
 endfunction   
 " }}}  
