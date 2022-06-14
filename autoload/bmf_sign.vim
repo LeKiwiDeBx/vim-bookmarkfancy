@@ -53,3 +53,7 @@ function! bmf_sign#place(bmf_flavor = 'normal')
     "# TODO: mise a jour dictionnaire bookmarkfancy dans bookmarkfancy.vim
     return id
 endfunction
+
+function! bmf_sign#unplace(bmf_sign_id = 0)
+    call sign_unplace('*', {'id' : a:bmf_sign_id})
+endfunction

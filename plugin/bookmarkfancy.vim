@@ -92,8 +92,16 @@ function! s:BookmarkFancyUpdate(line_number)
     bookmarkfancy#update(a:line_number)
 endfunction
 
-function! s:BoomarkFancyDelete(line_number)
+function! s:BookmarkFancyDelete(line_number)
     bookmarkfancy#delete(a:line_number)
+endfunction
+
+function! BookMarkFancyRemove(line_number = 0)
+    " version naïve :) test only
+    let l:bmf_sign_id = bookmarkfancy#remove(a:line_number)
+    echom 'bmf_sign_id :' . l:bmf_sign_id
+    call bmf_sign#unplace(l:bmf_sign_id)
+    return 1
 endfunction
 
 function! BookMarkFancyTest()
@@ -106,6 +114,7 @@ endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()
 command! BookMarkFancyCreate call BookMarkFancyCreate()
+command! BookMarkFancyRemove call BookMarkFancyRemove()
 "}}}
 
 " Mapping {{{
@@ -117,6 +126,11 @@ execute "nnoremap <silent> <Plug>BookMarkFancyCreate :BookMarkFancyCreate<CR>"
 if !hasmapto("<Plug>BookMarkFancyCreate")
     execute "nmap bc <Plug>BookMarkFancyCreate"
 endif
+execute "nnoremap <silent> <Plug>BookMarkFancyRemove :BookMarkFancyRemove<CR>"
+if !hasmapto("<Plug>BookMarkFancyRemove")
+    execute "nmap br <Plug>BookMarkFancyRemove"
+endif
+
 "}}}
 
 " Init {{{

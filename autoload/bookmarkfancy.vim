@@ -106,13 +106,20 @@ endfunction
 " param: aucun
 " return : vrai si il y'a bmf 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#remove(lnum = 0) "{{{
-    "/!\ Reécrire en fonction de bookmarkfancy_list values(bmf_remove)[0]['bmf_row']
-    "/!\ Voir function! BookmarkFancyRemove() dans /plugin pour for...in
-    let g:currentRow = a:lnum ==# ''? line(".") : a:lnum
-    if g:bookmarkfancy->has_key(g:currentRow)
-        return remove(g:bookmarkfancy, g:currentRow)
-    endif
+function! bookmarkfancy#remove(line_number = 0) "{{{
+    let g:currentRow = a:line_number ==# 0 ? line(".") : a:line_number
+    let l:idx = 0
+    for bookmarkfancy_dict in g:bookmarkfancy_list
+        if values(bookmarkfancy_dict)[0]['bmf_row'] ==# g:currentRow
+            "echom keys(bookmarkfancy_dict)[0]
+            call remove(g:bookmarkfancy_list, l:idx)
+            return  values(bookmarkfancy_dict)[0]['bmf_sign_id']
+            " TODO ecrire sign_unplace dans bmf_sign.vim
+            " return bmf_sign_id : values(bookmarkfancy_dict)[0]['bmf_sign_id']
+            " pour pouvoir sign_unplace
+        endif
+        let l:idx += 1
+    endfor 
     return v:false
 endfunction
 " }}}
