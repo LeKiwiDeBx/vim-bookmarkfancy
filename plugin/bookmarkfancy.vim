@@ -1,4 +1,7 @@
-let g:loaded_bookmarkfancy = 0
+if exists('g:loaded_bookmarkfancy') || !has('signs') || &compatible || v:version < 700
+    finish
+endif   
+let g:loaded_bookmarkfancy = 0 
 "structure caractère du bookmark ----------------------------------------------------------------------------
 "{1:'char_sign_1'}                                                          ⚑ ¶             
 let g:bmfsigns={
@@ -101,6 +104,10 @@ function! BookMarkFancyRemove(line_number = 0)
     return 1
 endfunction
 
+function! BookMarkFancyView()
+    belowright copen
+    call bookmarkfancy#view()
+endfunction
 function! BookMarkFancyTest()
     "echo bookmarkfancy#test()
     call bmf_sign#init()
@@ -112,6 +119,8 @@ endfunction
 command! BookMarkFancyTest call BookMarkFancyTest()
 command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
+command! BookMarkFancyView call BookMarkFancyView()
+
 "}}}
 
 " Mapping {{{
@@ -126,6 +135,10 @@ endif
 execute "nnoremap <silent> <Plug>BookMarkFancyRemove :BookMarkFancyRemove<CR>"
 if !hasmapto("<Plug>BookMarkFancyRemove")
     execute "nmap br <Plug>BookMarkFancyRemove"
+endif
+execute "nnoremap <silent> <Plug>BookMarkFancyView :BookMarkFancyView<CR>"
+if !hasmapto("<Plug>BookMarkFancyView")
+    execute "nmap bv <Plug>BookMarkFancyView"
 endif
 
 "}}}

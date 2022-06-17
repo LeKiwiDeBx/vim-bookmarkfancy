@@ -90,12 +90,15 @@ endfunction
 " bmfFlavor : combo symbole/couleur ie: g:bmfflavors["normal"] normal est une flavor
 " return : rien 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#flavor(bmfFlavor) "{{{
+function! bookmarkfancy#flavor(bmfFlavor = "normal") "{{{
     "si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien
     let g:currentRow = line(".")
-    if g:bookmarkfancy->has_key(g:currentRow)
-        let g:bookmarkfancy["g:currentRow"] ={bmf_sign:a:bmfFlavor["bmf_sign"], bmf_color:a:bmfFlavor["bmf_color"]}
-    endif
+    for bookmarkfancy_dict in g:bookmarkfancy_list
+        if values(bookmarkfancy_dict)[0]['bmf_row'] ==# g:currentRow
+            "TODO un remove et un create BookMarkFancy[Remove,Create]
+            "let bookmarkfancy_dict[0] = {'bmf_sign':g:bmfflavors[a:bmfFlavor]["bmf_sign"], 'bmf_color':g:bmfflavors[a:bmfFlavor]["bmf_color"]}
+        endif
+    endfor 
 endfunction
 " }}}
 
@@ -150,6 +153,7 @@ endfunction
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#view(how = 'ALL')
     "h: setqflist() à partir bookmarkfancy_list m.a.j. par rapport sign add/delete
+    const title = "bookmarkfancy's signs"
     let qflist = []
     for bmf_dic in g:bookmarkfancy_list
         for val in values(bmf_dic)
@@ -158,7 +162,7 @@ function! bookmarkfancy#view(how = 'ALL')
             echom qflist
         endfor
     endfor
-    call setqflist([],'r',{'items':qflist, 'title':'bmfSignList'})
+    call setqflist([],'r',{'items':qflist, 'title':title})
 endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
