@@ -6,22 +6,25 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^command! BookMarkFancyCreate call BookMarkFancyCreate()$/;"	c
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^function! BookMarkFancyCreate(bmf_flavors = 'normal')$/;"	f
+BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^command! BookMarkFancyRemove call BookMarkFancyRemove()$/;"	c
+BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^function! BookMarkFancyRemove(line_number = 0)$/;"	f
 BookMarkFancyTest	plugin/bookmarkfancy.vim	/^command! BookMarkFancyTest call BookMarkFancyTest()$/;"	c
 BookMarkFancyTest	plugin/bookmarkfancy.vim	/^function! BookMarkFancyTest()$/;"	f
+BookmarkFancyDelete	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyDelete(line_number)$/;"	f
 BookmarkFancyRead	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyRead(line_number)$/;"	f
 BookmarkFancyUpdate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyUpdate(line_number)$/;"	f
-BoomarkFancyDelete	plugin/bookmarkfancy.vim	/^function! s:BoomarkFancyDelete(line_number)$/;"	f
 CompareRow	autoload/bookmarkfancy.vim	/^function CompareRow(row1, row2) $/;"	f
 bmf_sign#highlights	autoload/bmf_sign.vim	/^function! bmf_sign#highlights(flavor_name = "normal")$/;"	f
 bmf_sign#init	autoload/bmf_sign.vim	/^function! bmf_sign#init()$/;"	f
 bmf_sign#place	autoload/bmf_sign.vim	/^function! bmf_sign#place(bmf_flavor = 'normal')$/;"	f
 bmf_sign#sync	autoload/bmf_sign.vim	/^function! bmf_sign#sync(buf_name ='')$/;"	f
+bmf_sign#unplace	autoload/bmf_sign.vim	/^function! bmf_sign#unplace(bmf_sign_id = 0) abort$/;"	f
 bookmarkfancy#create	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{$/;"	f
 bookmarkfancy#design	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#design(bmfSign, bmfColor) "{{{$/;"	f
 bookmarkfancy#flavor	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#flavor(bmfFlavor) "{{{$/;"	f
 bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init()$/;"	f
 bookmarkfancy#read	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#read(bmfLineNumber = 0) "{{{$/;"	f
-bookmarkfancy#remove	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#remove(lnum = 0) "{{{$/;"	f
+bookmarkfancy#remove	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#remove(line_number = 0) "{{{$/;"	f
 bookmarkfancy#sort	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{$/;"	f
 bookmarkfancy#test	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#test()$/;"	f
 bookmarkfancy#toggle	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#toggle()$/;"	f

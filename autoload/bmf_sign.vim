@@ -8,7 +8,6 @@ endfunction
 
 function! bmf_sign#highlights(flavor_name = "normal")
     " echo "Sign highlighted"
-    " TODO passer toutes les 'bmfflavors' en highlight pour ctermfg et guifg
     let gui_fg_flavor = g:bmfcolors["default"]["fg_gui"]
     let term_fg_flavor = g:bmfcolors["default"]["fg_term"]
     if &term=~'xterm'
@@ -29,17 +28,19 @@ function! bmf_sign#highlights(flavor_name = "normal")
         endif
         execute "highlight BookmarkfancySign"..sufx.." ctermfg=".. term_fg_flavor .." guifg=".. gui_fg_flavor ..
                     \ " ctermbg=".. term_bg_flavor .." guibg=".. gui_bg_flavor
-       " highlight default link BookmarkfancySign  BookmarkfancySignDefault
+        " highlight default link BookmarkfancySign  BookmarkfancySignDefault
     endfor
 endfunction
 
 function! bmf_sign#sync(buf_name ='')
     let g:buf = a:buf_name->empty()? bufname("%") : a:buf_name
-    let g:sign_list = g:buf->sign_getplaced()[0]['signs']
-    "liste de dictionnaires de signe du buffer
-    echom " Liste de dictionnaires de signes = "
+    "let g:sign_list = g:buf->sign_getplaced()[0]['signs']
+    let g:sign_list = sign_getplaced()
+    echom " Liste de signes : "
     echom g:sign_list
+    echom " liste des bookmarkfancy_list : "
     echom g:bookmarkfancy_list
+
 endfunction
 
 function! bmf_sign#place(bmf_flavor = 'normal')
@@ -47,13 +48,19 @@ function! bmf_sign#place(bmf_flavor = 'normal')
     let g:bmf_create = []
     let g:buf = bufnr(expand("%:p"))
     let l:sign_name = g:bmfflavors->has_key(a:bmf_flavor)? 'sign_' . a:bmf_flavor : 'sign_normal'
-    " parametrer nom du sign en fonction de la flavor 'sign_'..['normal','alert',..]
     let id = sign_place(0, '', l:sign_name, g:buf, {'lnum':g:currentRow})
     "echom "id sign : " . id
-    "# TODO: mise a jour dictionnaire bookmarkfancy dans bookmarkfancy.vim
     return id
 endfunction
 
-function! bmf_sign#unplace(bmf_sign_id = 0)
-    call sign_unplace('*', {'id' : a:bmf_sign_id})
+function! bmf_sign#unplace(bmf_sign_id = 0) abort
+    try
+        echom "blox try"
+        exe "silent! call sign_unplace('*', {'id' : a:bmf_sign_id})"
+    catch /.*/
+        echom 'DEBUG :: ERREUR :( bmf_sign_id = ' .. a:bmf_sign_id
+        echoerr v:exception
+    finally
+        echom "id :".a:bmf_sign_id
+    endtry
 endfunction

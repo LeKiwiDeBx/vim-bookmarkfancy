@@ -44,8 +44,6 @@ let g:bmfcolors={
 "  "bmf_color": "couleur du bmf"
 "  }
 "}
-"TODO completer alert,warning,notice avec la syntaxe style normal adaptée
-"/!\ differencier pour les quatres style fg_gui et fg_term /!\
 if &term=~'xterm'
     let g:bmf_fg= "fg_gui"
 else
@@ -71,14 +69,13 @@ function! s:init()
 endfunction
 
 "
-" Ecrire fonction CRUD Create Read Update Delete
 "Commands {{{
 function! BookMarkFancyCreate(bmf_flavors = 'normal')
     call bmf_sign#init()
     let l:bmf_create = bookmarkfancy#create(bmf_sign#place(a:bmf_flavors),
-                                          \ g:bmfflavors[a:bmf_flavors]['bmf_sign'],
-                                          \ g:bmfflavors[a:bmf_flavors]['bmf_color'])
-    call add(g:bookmarkfancy_list, l:bmf_create)
+                \ g:bmfflavors[a:bmf_flavors]['bmf_sign'],
+                \ g:bmfflavors[a:bmf_flavors]['bmf_color'])
+    eval g:bookmarkfancy_list->add(l:bmf_create)
     " écrire la fonction de vue sign#create(g:bookmarkfancy)
 endfunction
 
@@ -100,7 +97,7 @@ function! BookMarkFancyRemove(line_number = 0)
     " version naïve :) test only
     let l:bmf_sign_id = bookmarkfancy#remove(a:line_number)
     echom 'bmf_sign_id :' . l:bmf_sign_id
-    call bmf_sign#unplace(l:bmf_sign_id)
+    echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'sign remove' : 'no action to do'
     return 1
 endfunction
 

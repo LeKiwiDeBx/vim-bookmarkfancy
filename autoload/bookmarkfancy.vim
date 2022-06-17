@@ -111,12 +111,8 @@ function! bookmarkfancy#remove(line_number = 0) "{{{
     let l:idx = 0
     for bookmarkfancy_dict in g:bookmarkfancy_list
         if values(bookmarkfancy_dict)[0]['bmf_row'] ==# g:currentRow
-            "echom keys(bookmarkfancy_dict)[0]
             call remove(g:bookmarkfancy_list, l:idx)
             return  values(bookmarkfancy_dict)[0]['bmf_sign_id']
-            " TODO ecrire sign_unplace dans bmf_sign.vim
-            " return bmf_sign_id : values(bookmarkfancy_dict)[0]['bmf_sign_id']
-            " pour pouvoir sign_unplace
         endif
         let l:idx += 1
     endfor 
@@ -154,6 +150,15 @@ endfunction
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#view(how = 'ALL')
     "h: setqflist() à partir bookmarkfancy_list m.a.j. par rapport sign add/delete
+    let qflist = []
+    for bmf_dic in g:bookmarkfancy_list
+        for val in values(bmf_dic)
+            let dx_items = {'lnum':val['bmf_row'], 'text':val['bmf_txt'], 'bufnr':val['bmf_buffer']}
+            call add(qflist, dx_items)
+            echom qflist
+        endfor
+    endfor
+    call setqflist([],'r',{'items':qflist, 'title':'bmfSignList'})
 endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
