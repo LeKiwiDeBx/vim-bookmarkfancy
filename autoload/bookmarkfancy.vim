@@ -90,14 +90,21 @@ endfunction
 " bmfFlavor : combo symbole/couleur ie: g:bmfflavors["normal"] normal est une flavor
 " return : rien 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#flavor(bmfFlavor = "normal") "{{{
+function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
     "si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien
     let g:currentRow = line(".")
+    let l:idx = 0
     for bookmarkfancy_dict in g:bookmarkfancy_list
         if values(bookmarkfancy_dict)[0]['bmf_row'] ==# g:currentRow
-            "TODO un remove et un create BookMarkFancy[Remove,Create]
-            "let bookmarkfancy_dict[0] = {'bmf_sign':g:bmfflavors[a:bmfFlavor]["bmf_sign"], 'bmf_color':g:bmfflavors[a:bmfFlavor]["bmf_color"]}
+            " echo values(bookmarkfancy_dict)[0]['bmf_sign_id']
+            " echo keys(bookmarkfancy_dict)
+            let bmf_sign_id =  values(bookmarkfancy_dict)[0]['bmf_sign_id']
+            let bmf_key = keys(bookmarkfancy_dict)[0]
+            call bmf_sign#place(a:bmf_flavor, bmf_sign_id)
+            let g:bookmarkfancy_list[l:idx][bmf_key].bmf_sign = g:bmfflavors[a:bmf_flavor]["bmf_sign"]
+            let g:bookmarkfancy_list[l:idx][bmf_key].bmf_color = g:bmfflavors[a:bmf_flavor]["bmf_color"]
         endif
+        let l:idx += 1
     endfor 
 endfunction
 " }}}

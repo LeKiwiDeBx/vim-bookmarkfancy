@@ -43,12 +43,12 @@ function! bmf_sign#sync(buf_name ='')
 
 endfunction
 
-function! bmf_sign#place(bmf_flavor = 'normal')
+function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0)
     let g:currentRow = line(".")
     let g:bmf_create = []
     let g:buf = bufnr(expand("%:p"))
     let l:sign_name = g:bmfflavors->has_key(a:bmf_flavor)? 'sign_' . a:bmf_flavor : 'sign_normal'
-    let id = sign_place(0, '', l:sign_name, g:buf, {'lnum':g:currentRow})
+    let id = sign_place(a:bmf_sign_id, '', l:sign_name, g:buf, {'lnum':g:currentRow})
     "echom "id sign : " . id
     return id
 endfunction
