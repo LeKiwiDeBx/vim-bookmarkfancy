@@ -94,6 +94,7 @@ function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
     "si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien
     let g:currentRow = line(".")
     let l:idx = 0
+    let l:flavor = g:bmfflavors->has_key(a:bmf_flavor)? a:bmf_flavor : 'normal'
     for bookmarkfancy_dict in g:bookmarkfancy_list
         if values(bookmarkfancy_dict)[0]['bmf_row'] ==# g:currentRow
             " echo values(bookmarkfancy_dict)[0]['bmf_sign_id']
@@ -101,8 +102,8 @@ function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
             let bmf_sign_id =  values(bookmarkfancy_dict)[0]['bmf_sign_id']
             let bmf_key = keys(bookmarkfancy_dict)[0]
             call bmf_sign#place(a:bmf_flavor, bmf_sign_id)
-            let g:bookmarkfancy_list[l:idx][bmf_key].bmf_sign = g:bmfflavors[a:bmf_flavor]["bmf_sign"]
-            let g:bookmarkfancy_list[l:idx][bmf_key].bmf_color = g:bmfflavors[a:bmf_flavor]["bmf_color"]
+            let g:bookmarkfancy_list[l:idx][bmf_key].bmf_sign = g:bmfflavors[l:flavor]["bmf_sign"]
+            let g:bookmarkfancy_list[l:idx][bmf_key].bmf_color = g:bmfflavors[l:flavor]["bmf_color"]
         endif
         let l:idx += 1
     endfor 
@@ -206,7 +207,8 @@ function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
         let g:bmfList = g:bmfList->add(row[0])
     endfor
     echom g:bmfList
-    bookmarkfancy#init
+    "call bookmarkfancy#init()
+    "let g:bookmarkfancy_list = copy(g:bmfList)
     return g:bmfList
 endfunction   
 " }}}  
