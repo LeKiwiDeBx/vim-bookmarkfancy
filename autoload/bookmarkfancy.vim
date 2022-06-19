@@ -92,6 +92,7 @@ endfunction
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
     "si la ligne à un bookmark alors on affecte bmfSign et bmfColor sinon rien
+    let g:count += 1
     let g:currentRow = line(".")
     let l:idx = 0
     let l:flavor = g:bmfflavors->has_key(a:bmf_flavor)? a:bmf_flavor : 'normal'
@@ -106,6 +107,7 @@ function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
             let g:bookmarkfancy_list[l:idx][bmf_key].bmf_color = g:bmfflavors[l:flavor]["bmf_color"]
         endif
         let l:idx += 1
+        echom "count : " .. g:count
     endfor 
 endfunction
 " }}}

@@ -2,6 +2,7 @@ if exists('g:loaded_bookmarkfancy') || !has('signs') || &compatible || v:version
     finish
 endif   
 let g:loaded_bookmarkfancy = 0 
+let g:count = 0
 "structure caractère du bookmark ----------------------------------------------------------------------------
 "{1:'char_sign_1'}                                                          ⚑ ¶             
 let g:bmfsigns={
@@ -108,6 +109,7 @@ function! BookMarkFancyView()
     belowright copen
     call bookmarkfancy#view()
 endfunction
+
 function! BookMarkFancyTest()
     "echo bookmarkfancy#test()
     call bmf_sign#init()
@@ -116,10 +118,15 @@ function! BookMarkFancyTest()
     let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(bmf_sign#place())) 
 endfunction
 
+function! BookMarkFancyFlavor(bmf_flavor)
+    call bookmarkfancy#flavor(a:bmf_flavor)
+endfunction
+
 command! BookMarkFancyTest call BookMarkFancyTest()
 command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancyView call BookMarkFancyView()
+command! BookMarkFancyFlavor call BookMarkFancyFlavor(input("Choice the flavor: "))
 
 "}}}
 
@@ -140,7 +147,10 @@ execute "nnoremap <silent> <Plug>BookMarkFancyView :BookMarkFancyView<CR>"
 if !hasmapto("<Plug>BookMarkFancyView")
     execute "nmap bv <Plug>BookMarkFancyView"
 endif
-
+execute "nnoremap <silent> <Plug>BookMarkFancyFlavor :BookMarkFancyFlavor<CR>"
+if !hasmapto("<Plug>BookMarkFancyFlavor")
+    execute "nmap bf <Plug>BookMarkFancyFlavor"
+endif
 "}}}
 
 " Init {{{

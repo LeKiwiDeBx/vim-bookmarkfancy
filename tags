@@ -6,6 +6,8 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^command! BookMarkFancyCreate call BookMarkFancyCreate()$/;"	c
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^function! BookMarkFancyCreate(bmf_flavors = 'normal')$/;"	f
+BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^command! BookMarkFancyFlavor call BookMarkFancyFlavor(input("Choice the flavor: "))$/;"	c
+BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^function! BookMarkFancyFlavor(bmf_flavor)$/;"	f
 BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^command! BookMarkFancyRemove call BookMarkFancyRemove()$/;"	c
 BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^function! BookMarkFancyRemove(line_number = 0)$/;"	f
 BookMarkFancyTest	plugin/bookmarkfancy.vim	/^command! BookMarkFancyTest call BookMarkFancyTest()$/;"	c
@@ -18,12 +20,12 @@ BookmarkFancyUpdate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyUpdate(l
 CompareRow	autoload/bookmarkfancy.vim	/^function CompareRow(row1, row2) $/;"	f
 bmf_sign#highlights	autoload/bmf_sign.vim	/^function! bmf_sign#highlights(flavor_name = "normal")$/;"	f
 bmf_sign#init	autoload/bmf_sign.vim	/^function! bmf_sign#init()$/;"	f
-bmf_sign#place	autoload/bmf_sign.vim	/^function! bmf_sign#place(bmf_flavor = 'normal')$/;"	f
+bmf_sign#place	autoload/bmf_sign.vim	/^function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0)$/;"	f
 bmf_sign#sync	autoload/bmf_sign.vim	/^function! bmf_sign#sync(buf_name ='')$/;"	f
 bmf_sign#unplace	autoload/bmf_sign.vim	/^function! bmf_sign#unplace(bmf_sign_id = 0) abort$/;"	f
 bookmarkfancy#create	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{$/;"	f
 bookmarkfancy#design	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#design(bmfSign, bmfColor) "{{{$/;"	f
-bookmarkfancy#flavor	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#flavor(bmfFlavor = "normal") "{{{$/;"	f
+bookmarkfancy#flavor	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{$/;"	f
 bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init()$/;"	f
 bookmarkfancy#read	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#read(bmfLineNumber = 0) "{{{$/;"	f
 bookmarkfancy#remove	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#remove(line_number = 0) "{{{$/;"	f
@@ -41,6 +43,7 @@ g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy = {}$/;"	v
 g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}$/;"	v
 g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}$/;"	v
 g:bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:bookmarkfancy[3]= {"bmf_row":3,"bmf_sign":"B","bmf_color" :"rouge", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}$/;"	v
+g:count	plugin/bookmarkfancy.vim	/^let g:count = 0$/;"	v
 g:loaded_bookmarkfancy	plugin/bookmarkfancy.vim	/^let g:loaded_bookmarkfancy = 0 $/;"	v
 init	plugin/bookmarkfancy.vim	/^function! s:init()$/;"	f
 s:save_cpo	autoload/bookmarkfancy.vim	/^let s:save_cpo = &cpo$/;"	v
