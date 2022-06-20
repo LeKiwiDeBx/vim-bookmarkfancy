@@ -6,7 +6,7 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^command! BookMarkFancyCreate call BookMarkFancyCreate()$/;"	c
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^function! BookMarkFancyCreate(bmf_flavors = 'normal')$/;"	f
-BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^command! BookMarkFancyFlavor call BookMarkFancyFlavor(input("Choice the flavor: "))$/;"	c
+BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^command! -nargs=1 -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)$/;"	c
 BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^function! BookMarkFancyFlavor(bmf_flavor)$/;"	f
 BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^command! BookMarkFancyRemove call BookMarkFancyRemove()$/;"	c
 BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^function! BookMarkFancyRemove(line_number = 0)$/;"	f
@@ -18,6 +18,7 @@ BookmarkFancyDelete	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyDelete(l
 BookmarkFancyRead	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyRead(line_number)$/;"	f
 BookmarkFancyUpdate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyUpdate(line_number)$/;"	f
 CompareRow	autoload/bookmarkfancy.vim	/^function CompareRow(row1, row2) $/;"	f
+ListFlavors	plugin/bookmarkfancy.vim	/^function! ListFlavors(A,L,P)$/;"	f
 bmf_sign#highlights	autoload/bmf_sign.vim	/^function! bmf_sign#highlights(flavor_name = "normal")$/;"	f
 bmf_sign#init	autoload/bmf_sign.vim	/^function! bmf_sign#init()$/;"	f
 bmf_sign#place	autoload/bmf_sign.vim	/^function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0)$/;"	f

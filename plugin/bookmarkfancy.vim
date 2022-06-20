@@ -118,19 +118,28 @@ function! BookMarkFancyTest()
     let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(bmf_sign#place())) 
 endfunction
 
+
 function! BookMarkFancyFlavor(bmf_flavor)
+    "let g:oldwildmode = &wildmode 
+    "set wildmode = longest:full, full
     call bookmarkfancy#flavor(a:bmf_flavor)
+    "set wildmode = g:oldwildmode
+endfunction
+
+function! ListFlavors(A,L,P)
+    return keys(g:bmfflavors)
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()
 command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancyView call BookMarkFancyView()
-command! BookMarkFancyFlavor call BookMarkFancyFlavor(input("Choice the flavor: "))
+command! -nargs=1 -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
 
 "}}}
 
 " Mapping {{{
+"set wildmode=list:longest
 execute "nnoremap <silent> <Plug>BookMarkFancyTest :BookMarkFancyTest<CR>"
 if !hasmapto("<Plug>BookMarkFancyTest")
     execute "nmap bt <Plug>BookMarkFancyTest"
