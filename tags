@@ -6,8 +6,8 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^command! BookMarkFancyCreate call BookMarkFancyCreate()$/;"	c
 BookMarkFancyCreate	plugin/bookmarkfancy.vim	/^function! BookMarkFancyCreate(bmf_flavors = 'normal')$/;"	f
-BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^command! -nargs=1 -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)$/;"	c
-BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^function! BookMarkFancyFlavor(bmf_flavor)$/;"	f
+BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor : call BookMarkFancyFlavor(<f-args>) $/;"	c
+BookMarkFancyFlavor	plugin/bookmarkfancy.vim	/^function! BookMarkFancyFlavor(bmf_flavor = 'normal')$/;"	f
 BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^command! BookMarkFancyRemove call BookMarkFancyRemove()$/;"	c
 BookMarkFancyRemove	plugin/bookmarkfancy.vim	/^function! BookMarkFancyRemove(line_number = 0)$/;"	f
 BookMarkFancyTest	plugin/bookmarkfancy.vim	/^command! BookMarkFancyTest call BookMarkFancyTest()$/;"	c

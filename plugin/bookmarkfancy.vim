@@ -119,7 +119,7 @@ function! BookMarkFancyTest()
 endfunction
 
 
-function! BookMarkFancyFlavor(bmf_flavor)
+function! BookMarkFancyFlavor(bmf_flavor = 'normal')
     "let g:oldwildmode = &wildmode 
     "set wildmode = longest:full, full
     call bookmarkfancy#flavor(a:bmf_flavor)
@@ -134,7 +134,7 @@ command! BookMarkFancyTest call BookMarkFancyTest()
 command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancyView call BookMarkFancyView()
-command! -nargs=1 -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
+command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor : call BookMarkFancyFlavor(<f-args>) 
 
 "}}}
 
@@ -158,7 +158,7 @@ if !hasmapto("<Plug>BookMarkFancyView")
 endif
 execute "nnoremap <silent> <Plug>BookMarkFancyFlavor :BookMarkFancyFlavor<CR>"
 if !hasmapto("<Plug>BookMarkFancyFlavor")
-    execute "nmap bf <Plug>BookMarkFancyFlavor"
+   execute "nmap bf <Plug>BookMarkFancyFlavor"
 endif
 "}}}
 
