@@ -134,7 +134,7 @@ command! BookMarkFancyTest call BookMarkFancyTest()
 command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancyView call BookMarkFancyView()
-command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor : call BookMarkFancyFlavor(<f-args>) 
+command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
 
 "}}}
 
@@ -156,7 +156,8 @@ execute "nnoremap <silent> <Plug>BookMarkFancyView :BookMarkFancyView<CR>"
 if !hasmapto("<Plug>BookMarkFancyView")
     execute "nmap bv <Plug>BookMarkFancyView"
 endif
-execute "nnoremap <silent> <Plug>BookMarkFancyFlavor :BookMarkFancyFlavor<CR>"
+set wcm=<C-Z>
+execute "nnoremap <Plug>BookMarkFancyFlavor :BookMarkFancyFlavor<space><C-Z><C-Z>"
 if !hasmapto("<Plug>BookMarkFancyFlavor")
    execute "nmap bf <Plug>BookMarkFancyFlavor"
 endif
