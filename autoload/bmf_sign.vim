@@ -55,12 +55,12 @@ endfunction
 
 function! bmf_sign#unplace(bmf_sign_id = 0) abort
     try
-        echom "blox try"
+        "echom "blox try"
         exe "silent! call sign_unplace('*', {'id' : a:bmf_sign_id})"
     catch /.*/
         echom 'DEBUG :: ERREUR :( bmf_sign_id = ' .. a:bmf_sign_id
         echoerr v:exception
     finally
-        echom "id :".a:bmf_sign_id
+        "echom "id :".a:bmf_sign_id
     endtry
 endfunction

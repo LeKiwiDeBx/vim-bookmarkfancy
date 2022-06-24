@@ -107,7 +107,7 @@ function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
             let g:bookmarkfancy_list[l:idx][bmf_key].bmf_color = g:bmfflavors[l:flavor]["bmf_color"]
         endif
         let l:idx += 1
-        echom "count : " .. g:count
+        "echom "count : " .. g:count
     endfor 
 endfunction
 " }}}
@@ -169,10 +169,11 @@ function! bookmarkfancy#view(how = 'ALL')
         for val in values(bmf_dic)
             let dx_items = {'lnum':val['bmf_row'], 'text':val['bmf_txt'], 'bufnr':val['bmf_buffer']}
             call add(qflist, dx_items)
-            echom qflist
+            "echom qflist
         endfor
     endfor
     call setqflist([],'r',{'items':qflist, 'title':title})
+    call setqflist(getqflist()->sort({l1,l2 -> l1.lnum - l2.lnum}), 'r')
 endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -208,7 +209,7 @@ function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
     for row in a:bmfOrder ==# 'ASC'? g:bmfDic : g:bmfDic->reverse() 
         let g:bmfList = g:bmfList->add(row[0])
     endfor
-    echom g:bmfList
+    "echom g:bmfList
     "call bookmarkfancy#init()
     "let g:bookmarkfancy_list = copy(g:bmfList)
     return g:bmfList

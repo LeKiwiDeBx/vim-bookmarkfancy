@@ -85,22 +85,22 @@ endfunction
 
 function! s:BookmarkFancyRead(line_number)
     if (line_number > 0 && line_number <= max_key_bookmarkfancy)
-        bookmarkfancy#read(a:line_number)
+        call bookmarkfancy#read(a:line_number)
     endif
 endfunction
 
 function! s:BookmarkFancyUpdate(line_number)
-    bookmarkfancy#update(a:line_number)
+    call bookmarkfancy#update(a:line_number)
 endfunction
 
 function! s:BookmarkFancyDelete(line_number)
-    bookmarkfancy#delete(a:line_number)
+    call bookmarkfancy#delete(a:line_number)
 endfunction
 
 function! BookMarkFancyRemove(line_number = 0)
     " version naïve :) test only
     let l:bmf_sign_id = bookmarkfancy#remove(a:line_number)
-    echom 'bmf_sign_id :' . l:bmf_sign_id
+    "echom 'bmf_sign_id :' . l:bmf_sign_id
     echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'sign remove' : 'no action to do'
     return 1
 endfunction
@@ -159,7 +159,7 @@ endif
 set wcm=<C-Z>
 execute "nnoremap <Plug>BookMarkFancyFlavor :BookMarkFancyFlavor<space><C-Z><C-Z>"
 if !hasmapto("<Plug>BookMarkFancyFlavor")
-   execute "nmap bf <Plug>BookMarkFancyFlavor"
+    execute "nmap bf <Plug>BookMarkFancyFlavor"
 endif
 "}}}
 
