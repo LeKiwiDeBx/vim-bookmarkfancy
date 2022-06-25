@@ -182,8 +182,25 @@ endfunction
 " mise a jour du bmf 
 " param: aucun
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#update() "{{{
-    return 1
+function! bookmarkfancy#update(bmfLineNumber = 0, what = 'bmf_txt') "{{{
+    let g:currentRow = a:bmfLineNumber ==# 0 ? line(".")  : a:bmfLineNumber 
+    let l:found = v:false
+    for bmf_dic in g:bookmarkfancy_list
+        for val in values(bmf_dic)
+            if val['bmf_row'] == g:currentRow 
+    if a:what ==# 'bmf_txt'
+        call inputsave()
+        let FuncVal = {-> val['bmf_txt']}
+        let l:text = input("Replace the comment (use completion): ","", "custom,FuncVal")
+        call inputrestore()       
+        let val['bmf_txt'] = l:text
+                let l:found = v:true
+            endif
+            endif
+            " TODO recup sur 'bmf_row' == g:currentRow modif 'bmf_txt' par l:text
+        endfor
+    endfor
+    return l:found
 endfunction 
 " }}}
 
