@@ -131,6 +131,7 @@ if !hasmapto("<Plug>BookMarkFancyFlavor")
     execute "nmap bf <Plug>BookMarkFancyFlavor"
 endif
 "}}}
+"
 " Init {{{
 if has('vim_starting')
     autocmd VimEnter * call s:init()
