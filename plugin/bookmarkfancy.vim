@@ -1,27 +1,21 @@
 if exists('g:loaded_bookmarkfancy') || !has('signs') || &compatible || v:version < 700
     finish
-endif   
-let g:loaded_bookmarkfancy = 0 
+endif
+let g:loaded_bookmarkfancy = 0
 let g:count = 0
 "structure caractère du bookmark ----------------------------------------------------------------------------
 "{1:'char_sign_1'}                                                          ⚑ ¶             
+
 let g:bmfsigns={
             \ 'bmf_underline':{'bmf_flag':'','bmf_bookmark':'','bmf_alt':'¶'},
             \ 'bmf_bold':{'bmf_flag':'','bmf_bookmark':'','bmf_alt':'¶'},
             \ 'bmf_star':{'bmf_flag':'','bmf_bookmark':'','bmf_alt':'¶'}
             \ }
-"structure couleurs -----------------------------------------------------------------------------------------
-"{"nom_couleur_bm":
-"/ {
-"/  "fg_term":"ctermfg",
-"/  "fg_gui":"guifg"
-"/ }
-"/ }
 "if has("terminfo")
 "    "use fg_term
 "else
 "    "use fg_gui
-"endif    
+"endif
 let g:bmfcolors={
             \ "default":{"fg_term":"black","fg_gui":"#000000"},
             \ "normal":{"fg_term":"25","fg_gui":"#005FAF"},
@@ -30,29 +24,13 @@ let g:bmfcolors={
             \ "alert":{"fg_term":"160","fg_gui":"#D70000"},
             \ "pass":{"fg_term":"34","fg_gui":"#00AF00"}
             \ }
-"structure du dictionnaire ----------------------------------------------------------------------------------
-"{numero_de_ligne:
-"/ {
-"/  "bmf_sign":"caractère du bookmark",
-"/  "bmf_color" :"couleur",
-"/  "bmf_txt": "texte",
-"/  "bmf_timestamp":"timestamp"
-"/ }
-"structure texte --------------------------------------------------------------------------------------------
-"pas de structure nécessaire a ce moment
 
-"structure combo sign/color----------------------------------------------------------------------------------
-"{"nom_du_combo":
-"  {
-"  "bmf_sign":"char du bmf",
-"  "bmf_color": "couleur du bmf"
-"  }
-"}
 if &term=~'xterm'
     let g:bmf_fg= "fg_gui"
 else
     let g:bmf_fg = "fg_term"
 endif
+
 let g:bmfflavors ={
             \ "alert":{"bmf_sign":g:bmfsigns["bmf_star"]["bmf_bookmark"],"bmf_color":g:bmfcolors["alert"][g:bmf_fg]},
             \ "warning":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],"bmf_color":g:bmfcolors["warning"][g:bmf_fg]},
@@ -61,10 +39,6 @@ let g:bmfflavors ={
             \ "pass":{"bmf_sign":g:bmfsigns["bmf_star"]["bmf_bookmark"],"bmf_color":g:bmfcolors["pass"][g:bmf_fg]}
             \ }
 let g:bookmarkfancy = {}
-"test de la structure ---------------------------------------------------------------------------------------
-let g:bookmarkfancy= {1:{"bmf_row":1,"bmf_sign":"B","bmf_color" :"bleu", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}}
-let g:bookmarkfancy[2]= {"bmf_row":2,"bmf_sign":"B","bmf_color" :"blanc", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
-let g:bookmarkfancy[3]= {"bmf_row":3,"bmf_sign":"B","bmf_color" :"rouge", "bmf_txt": "LE TEXTE", "bmf_timestamp":0}
 
 function! s:init()
     if g:loaded_bookmarkfancy ==# 0
@@ -80,7 +54,6 @@ function! BookMarkFancyCreate(bmf_flavors = 'normal')
                 \ g:bmfflavors[a:bmf_flavors]['bmf_sign'],
                 \ g:bmfflavors[a:bmf_flavors]['bmf_color'])
     eval g:bookmarkfancy_list->add(l:bmf_create)
-    " écrire la fonction de vue sign#create(g:bookmarkfancy)
 endfunction
 
 function! s:BookmarkFancyRead(line_number)
@@ -100,27 +73,24 @@ endfunction
 function! BookMarkFancyRemove(line_number = 0)
     " version naïve :) test only
     let l:bmf_sign_id = bookmarkfancy#remove(a:line_number)
-    "echom 'bmf_sign_id :' . l:bmf_sign_id
     echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'sign remove' : 'no action to do'
     return 1
 endfunction
 
 function! BookMarkFancyView()
     belowright copen
+    call bmf_sign#sync()
     call bookmarkfancy#view()
 endfunction
 
 function! BookMarkFancyTest()
-    "echo bookmarkfancy#test()
     call bmf_sign#init()
-    "echo bookmarkfancy#sort()
-    "let l:id = bmf_sign#place()
-    let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(bmf_sign#place())) 
+    let g:bookmarkfancy_list = g:bookmarkfancy_list->add(bookmarkfancy#create(bmf_sign#place()))
 endfunction
 
 
 function! BookMarkFancyFlavor(bmf_flavor = 'normal')
-    "let g:oldwildmode = &wildmode 
+    "let g:oldwildmode = &wildmode
     "set wildmode = longest:full, full
     call bookmarkfancy#flavor(a:bmf_flavor)
     "set wildmode = g:oldwildmode
@@ -139,7 +109,6 @@ command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor call Book
 "}}}
 
 " Mapping {{{
-"set wildmode=list:longest
 execute "nnoremap <silent> <Plug>BookMarkFancyTest :BookMarkFancyTest<CR>"
 if !hasmapto("<Plug>BookMarkFancyTest")
     execute "nmap bt <Plug>BookMarkFancyTest"
@@ -162,11 +131,12 @@ if !hasmapto("<Plug>BookMarkFancyFlavor")
     execute "nmap bf <Plug>BookMarkFancyFlavor"
 endif
 "}}}
-
 " Init {{{
 if has('vim_starting')
     autocmd VimEnter * call s:init()
 else
     call s:init()
 endif
+
+autocmd InsertLeave,BufWritePost  * call BookMarkFancyView()
 "}}}

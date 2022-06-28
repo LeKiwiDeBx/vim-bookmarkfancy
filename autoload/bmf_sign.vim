@@ -33,14 +33,28 @@ function! bmf_sign#highlights(flavor_name = "normal")
 endfunction
 
 function! bmf_sign#sync(buf_name ='')
+    echom "appel bmf_sign#sync()"
     let g:buf = a:buf_name->empty()? bufname("%") : a:buf_name
-    "let g:sign_list = g:buf->sign_getplaced()[0]['signs']
     let g:sign_list = sign_getplaced()
-    echom " Liste de signes : "
-    echom g:sign_list
-    echom " liste des bookmarkfancy_list : "
-    echom g:bookmarkfancy_list
-
+    " echom " Liste de signes : "
+    " echom g:sign_list
+    " echom " liste des bookmarkfancy_list : "
+    " echom g:bookmarkfancy_list
+    for signdic in g:sign_list
+        let iddx = 0
+        while iddx <# len(signdic['signs'])
+            let [sid, slnum] = [signdic['signs'][iddx].id, signdic['signs'][iddx].lnum]
+            let bmfidx = 0
+            for bmfdict in g:bookmarkfancy_list
+                if values(bmfdict)[0]['bmf_sign_id'] ==# sid
+                    let v = values(g:bookmarkfancy_list[bmfidx])[0]
+                    let v['bmf_row'] = slnum 
+                endif    
+                let bmfidx += 1 
+            endfor
+            let iddx += 1
+        endwhile
+    endfor
 endfunction
 
 function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0)
