@@ -16,6 +16,7 @@ BookMarkFancyView	plugin/bookmarkfancy.vim	/^command! BookMarkFancyView call Boo
 BookMarkFancyView	plugin/bookmarkfancy.vim	/^function! BookMarkFancyView()$/;"	f
 BookmarkFancyDelete	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyDelete(line_number)$/;"	f
 BookmarkFancyRead	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyRead(line_number)$/;"	f
+BookmarkFancySave	plugin/bookmarkfancy.vim	/^function! BookmarkFancySave()$/;"	f
 BookmarkFancyUpdate	plugin/bookmarkfancy.vim	/^function! s:BookmarkFancyUpdate(line_number)$/;"	f
 CompareRow	autoload/bookmarkfancy.vim	/^function CompareRow(row1, row2) $/;"	f
 ListFlavors	plugin/bookmarkfancy.vim	/^function! ListFlavors(A,L,P)$/;"	f
@@ -30,9 +31,10 @@ bookmarkfancy#flavor	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#flavor
 bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init()$/;"	f
 bookmarkfancy#read	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#read(bmfLineNumber = 0) "{{{$/;"	f
 bookmarkfancy#remove	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#remove(line_number = 0) "{{{$/;"	f
+bookmarkfancy#restore	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#restore()$/;"	f
+bookmarkfancy#save	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#save()$/;"	f
 bookmarkfancy#sort	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{$/;"	f
 bookmarkfancy#test	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#test()$/;"	f
-bookmarkfancy#toggle	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#toggle()$/;"	f
 bookmarkfancy#update	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#update(bmfLineNumber = 0, what = 'bmf_txt') "{{{$/;"	f
 bookmarkfancy#view	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#view(how = 'ALL')$/;"	f
 g:bmf_fg	plugin/bookmarkfancy.vim	/^    let g:bmf_fg = "fg_term"$/;"	v

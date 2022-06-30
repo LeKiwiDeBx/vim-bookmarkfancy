@@ -96,6 +96,11 @@ function! BookMarkFancyFlavor(bmf_flavor = 'normal')
     "set wildmode = g:oldwildmode
 endfunction
 
+function! BookmarkFancySave()
+    call bmf_sign#sync()
+    call bookmarkfancy#save()
+endfunction
+
 function! ListFlavors(A,L,P)
     return keys(g:bmfflavors)
 endfunction
@@ -139,5 +144,5 @@ else
     call s:init()
 endif
 
-autocmd InsertLeave,BufWritePost  * call BookMarkFancyView()
+" autocmd InsertLeave,BufWritePost  * call BookMarkFancyView()
 "}}}

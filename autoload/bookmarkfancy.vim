@@ -16,19 +16,37 @@ function! bookmarkfancy#test()
 endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#toggle()
+" function! bookmarkfancy#save()
 "
-" crée ou enléve le bmf
-" return : rien
+" sauvegarde les bookmarks
+" return : true or false ;)
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#toggle()
-    let g:currentRow = line(".")
-    if g:bookmarkfancy->has_key(g:currentRow)
-        g:bookmarkfancy->delete(g:currentRow)
-    else
-        call bookmarkfancy#create(g:bmfflavors['normal']['bmf_sign'], g:bmfflavors['normal']['bmf_color'])
+function! bookmarkfancy#save()
+    "writefile /readfile
+    const l:file = "bmf_bookmarks.sav"
+    let l:directory = expand('%:p:h')
+    if l:directory->filewritable()
+        let l:file_save = l:directory."/".l:file
+        if writefile([json_encode(copy(g:bookmarkfancy_list))], l:file_save, "s") ==# -1
+            echom "Save File Error"
+            return v:false
+        else
+            echom "Save File Success"
+        endif
     endif
+    return v:true
 endfunction    
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#restore()
+"
+" restore les bookmarks
+" return : rien 
+" !!!!!!!!!! writing in progress...
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#restore()
+    return v:true
+endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#create(bmfSign, bmfColor)
@@ -187,14 +205,14 @@ function! bookmarkfancy#update(bmfLineNumber = 0, what = 'bmf_txt') "{{{
     for bmf_dic in g:bookmarkfancy_list
         for val in values(bmf_dic)
             if val['bmf_row'] == g:currentRow 
-    if a:what ==# 'bmf_txt'
-        call inputsave()
-        let FuncVal = {-> val['bmf_txt']}
-        let l:text = input("Replace the comment (use completion): ","", "custom,FuncVal")
-        call inputrestore()       
-        let val['bmf_txt'] = l:text
-                let l:found = v:true
-            endif
+                if a:what ==# 'bmf_txt'
+                    call inputsave()
+                    let FuncVal = {-> val['bmf_txt']}
+                    let l:text = input("Replace the comment (use completion): ","", "custom,FuncVal")
+                    call inputrestore()       
+                    let val['bmf_txt'] = l:text
+                    let l:found = v:true
+                endif
             endif
             " TODO recup sur 'bmf_row' == g:currentRow modif 'bmf_txt' par l:text
         endfor

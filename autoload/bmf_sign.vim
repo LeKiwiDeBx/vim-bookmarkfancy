@@ -33,7 +33,7 @@ function! bmf_sign#highlights(flavor_name = "normal")
 endfunction
 
 function! bmf_sign#sync(buf_name ='')
-    echom "appel bmf_sign#sync()"
+    echom "--> appel bmf_sign#sync()"
     let g:buf = a:buf_name->empty()? bufname("%") : a:buf_name
     let g:sign_list = sign_getplaced()
     " echom " Liste de signes : "
