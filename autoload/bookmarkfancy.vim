@@ -44,7 +44,40 @@ endfunction
 " return : rien 
 " !!!!!!!!!! writing in progress...
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#restore()
+function! bookmarkfancy#restore(file)
+    " ne pas tenir compte des buffers d'origine
+    " retouver a partir des fenetres ayant les fichiers concernés les buffers
+    " pour reinitialiser les signs avec les nouveaux buffers
+    " fonctions utiles winbufnr() bufnr() bufwinid() bufwinnr() bufname() bufexists() bufloaded(nomm complet fichier)
+    " getbufinfo().name ie
+    " sign_placelist({list})
+    " liste des buffers en cours
+    "  map(getbufinfo({'buflisted': 1}), 'v:val.name')
+    "  avec filter
+    "  map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
+    let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
+    let bufnrlist = []
+    let l:bookmarkfancy_sav_list = eval(readfile(a:file)[0]) 
+    for dict in l:bookmarkfancy_sav_list
+        let l:bmf_file = values(dict)[0]
+        "echom l:bmf_file
+        "echom l:bmf_file.bmf_file
+        for buf_name in l:buf_list
+            if buf_name ==# l:bmf_file.bmf_file
+                echom "file " .. l:bmf_file.bmf_file .. " is in a buffer"
+                echom "buffer number is " .. bufnr(l:bmf_file.bmf_file) 
+                let l:bnr = bufnr(l:bmf_file.bmf_file) 
+                call add(l:bufnrlist,l:bnr) 
+                call bmf_sign_place(0,'','sign_', l_bnr, {'lnum':l:bmf_file.bmf_row}) 
+            else
+                "echom "file " .. l:bmf_file.bmf_file .. " isn't in a buffer"
+            endif
+        endfor
+        "echom l:bmf_file.bmf_name
+    endfor
+    echom "buffer list : "
+    echom l:bufnrlist
+"    call sign_placelist(l:sign_list)
     return v:true
 endfunction
 
@@ -61,6 +94,7 @@ function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{
     let g:max_lenght = 45
     let g:currentRow = line(".")
     let bmfSign = a:bmf_sign->empty() ? g:bmfflavors["normal"]["bmf_sign"] :  a:bmf_sign
+    let bmfSignName = sign_getplaced('',{'id': a:bmfSignId})[0]['signs'][0]['name'] 
     let bmfColor = a:bmf_color->empty() ? g:bmfflavors["normal"]["bmf_color"] : a:bmf_color 
     " echom "/nbmfColor du create : " .. bmfColor
     let g:currentText = g:currentRow->getline()->strcharpart(idx, g:max_lenght)
@@ -71,7 +105,8 @@ function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{
     let g:bookmarkfancy = {g:currentRow: 
                 \              {'bmf_row':g:currentRow,
                 \               'bmf_sign_id': a:bmfSignId,
-                \               'bmf_sign':bmfSign, 
+                \               'bmf_sign':bmfSign,  
+                \               'bmf_sign_name':bmfSignName,
                 \               'bmf_color':bmfColor,
                 \               'bmf_txt':g:currentText,
                 \               'bmf_buffer':g:currentBuffer,
@@ -121,6 +156,8 @@ function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
             let bmf_sign_id =  values(bookmarkfancy_dict)[0]['bmf_sign_id']
             let bmf_key = keys(bookmarkfancy_dict)[0]
             call bmf_sign#place(a:bmf_flavor, bmf_sign_id)
+            let bmf_sign_name = sign_getplaced('',{'id':bmf_sign_id})[0]['signs'][0]['name'] 
+            let g:bookmarkfancy_list[l:idx][bmf_key].bmf_sign_name = bmf_sign_name
             let g:bookmarkfancy_list[l:idx][bmf_key].bmf_sign = g:bmfflavors[l:flavor]["bmf_sign"]
             let g:bookmarkfancy_list[l:idx][bmf_key].bmf_color = g:bmfflavors[l:flavor]["bmf_color"]
         endif
@@ -214,7 +251,6 @@ function! bookmarkfancy#update(bmfLineNumber = 0, what = 'bmf_txt') "{{{
                     let l:found = v:true
                 endif
             endif
-            " TODO recup sur 'bmf_row' == g:currentRow modif 'bmf_txt' par l:text
         endfor
     endfor
     return l:found

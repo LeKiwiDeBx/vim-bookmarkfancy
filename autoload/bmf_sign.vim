@@ -6,6 +6,7 @@ function! bmf_sign#init()
     endfor
 endfunction
 
+
 function! bmf_sign#highlights(flavor_name = "normal")
     " echo "Sign highlighted"
     let gui_fg_flavor = g:bmfcolors["default"]["fg_gui"]
@@ -57,10 +58,10 @@ function! bmf_sign#sync(buf_name ='')
     endfor
 endfunction
 
-function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0)
+function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0, bmf_buffer = 0 )
     let g:currentRow = line(".")
     let g:bmf_create = []
-    let g:buf = bufnr(expand("%:p"))
+    let g:buf = a:bmf_buffer ==# 0? bufnr(expand("%:p")) : a:bmf_buffer
     let l:sign_name = g:bmfflavors->has_key(a:bmf_flavor)? 'sign_' . a:bmf_flavor : 'sign_normal'
     let id = sign_place(a:bmf_sign_id, '', l:sign_name, g:buf, {'lnum':g:currentRow})
     "echom "id sign : " . id

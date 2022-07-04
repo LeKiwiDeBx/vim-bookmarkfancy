@@ -22,7 +22,7 @@ CompareRow	autoload/bookmarkfancy.vim	/^function CompareRow(row1, row2) $/;"	f
 ListFlavors	plugin/bookmarkfancy.vim	/^function! ListFlavors(A,L,P)$/;"	f
 bmf_sign#highlights	autoload/bmf_sign.vim	/^function! bmf_sign#highlights(flavor_name = "normal")$/;"	f
 bmf_sign#init	autoload/bmf_sign.vim	/^function! bmf_sign#init()$/;"	f
-bmf_sign#place	autoload/bmf_sign.vim	/^function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0)$/;"	f
+bmf_sign#place	autoload/bmf_sign.vim	/^function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0, bmf_buffer = 0 )$/;"	f
 bmf_sign#sync	autoload/bmf_sign.vim	/^function! bmf_sign#sync(buf_name ='')$/;"	f
 bmf_sign#unplace	autoload/bmf_sign.vim	/^function! bmf_sign#unplace(bmf_sign_id = 0) abort$/;"	f
 bookmarkfancy#create	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{$/;"	f
@@ -31,7 +31,7 @@ bookmarkfancy#flavor	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#flavor
 bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init()$/;"	f
 bookmarkfancy#read	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#read(bmfLineNumber = 0) "{{{$/;"	f
 bookmarkfancy#remove	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#remove(line_number = 0) "{{{$/;"	f
-bookmarkfancy#restore	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#restore()$/;"	f
+bookmarkfancy#restore	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#restore(file)$/;"	f
 bookmarkfancy#save	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#save()$/;"	f
 bookmarkfancy#sort	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{$/;"	f
 bookmarkfancy#test	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#test()$/;"	f
