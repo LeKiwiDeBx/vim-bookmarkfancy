@@ -67,8 +67,10 @@ function! bookmarkfancy#restore(file)
                 echom "file " .. l:bmf_file.bmf_file .. " is in a buffer"
                 echom "buffer number is " .. bufnr(l:bmf_file.bmf_file) 
                 let l:bnr = bufnr(l:bmf_file.bmf_file) 
+                echom l:bmf_file.bmf_sign_name
                 call add(l:bufnrlist,l:bnr) 
-                call bmf_sign_place(0,'','sign_', l_bnr, {'lnum':l:bmf_file.bmf_row}) 
+                call sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row}) 
+                "TODO: mettre à jour bookmarkfancy_list
             else
                 "echom "file " .. l:bmf_file.bmf_file .. " isn't in a buffer"
             endif
