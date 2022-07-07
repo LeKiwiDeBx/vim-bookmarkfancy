@@ -44,7 +44,7 @@ endfunction
 " return : rien 
 " !!!!!!!!!! writing in progress...
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#restore(file)
+function! bookmarkfancy#restore(file) "{{{
     " ne pas tenir compte des buffers d'origine
     " retouver a partir des fenetres ayant les fichiers concernés les buffers
     " pour reinitialiser les signs avec les nouveaux buffers
@@ -55,32 +55,60 @@ function! bookmarkfancy#restore(file)
     "  map(getbufinfo({'buflisted': 1}), 'v:val.name')
     "  avec filter
     "  map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
+    let g:bookmarkfancy_list = []
     let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
     let bufnrlist = []
     let l:bookmarkfancy_sav_list = eval(readfile(a:file)[0]) 
     for dict in l:bookmarkfancy_sav_list
-        let l:bmf_file = values(dict)[0]
+        let [l:bmf_file_key, l:bmf_file] =[keys(dict)[0], values(dict)[0]]
         "echom l:bmf_file
         "echom l:bmf_file.bmf_file
         for buf_name in l:buf_list
             if buf_name ==# l:bmf_file.bmf_file
-                echom "file " .. l:bmf_file.bmf_file .. " is in a buffer"
-                echom "buffer number is " .. bufnr(l:bmf_file.bmf_file) 
+               " echom "file " .. l:bmf_file.bmf_file .. " is in a buffer"
+               " echom "buffer number is " .. bufnr(l:bmf_file.bmf_file) 
                 let l:bnr = bufnr(l:bmf_file.bmf_file) 
-                echom l:bmf_file.bmf_sign_name
+               " echom l:bmf_file.bmf_sign_name
                 call add(l:bufnrlist,l:bnr) 
-                call sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row}) 
-                "TODO: mettre à jour bookmarkfancy_list
+                let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row}) 
+                "TODO: mise à jour(update) ou ecraser(overwrite) ? bookmarkfancy_list 
+                "bmf_sign_id et bmf_buffer
+                "echom bookmarkfancy#setrestore(dict, l:bmfSignId, l:bnr)
+                call add(g:bookmarkfancy_list, bookmarkfancy#setrestore(dict, l:bmfSignId, l:bnr))
             else
                 "echom "file " .. l:bmf_file.bmf_file .. " isn't in a buffer"
             endif
         endfor
         "echom l:bmf_file.bmf_name
     endfor
-    echom "buffer list : "
-    echom l:bufnrlist
-"    call sign_placelist(l:sign_list)
+    "echom "buffer list : "
+    "echom l:bufnrlist
+    "    call sign_placelist(l:sign_list)
     return v:true
+endfunction
+" }}}
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#setrestore()
+"
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#setrestore(bmfSaveList, bmfSignId, bmfBuffer)
+let l:bmf = values(a:bmfSaveList)[0]
+let l:key_row = keys(a:bmfSaveList)[0]
+let  l:bmf  = {l:key_row: 
+                \  {'bmf_row':l:bmf.bmf_row,
+                \  'bmf_sign_id': a:bmfSignId,
+                \  'bmf_sign':l:bmf.bmf_sign,  
+                \  'bmf_sign_name':l:bmf.bmf_sign_name,
+                \  'bmf_color':l:bmf.bmf_color,
+                \  'bmf_txt':l:bmf.bmf_txt,
+                \  'bmf_buffer':a:bmfBuffer,
+                \  'bmf_file':l:bmf.bmf_file,
+                \  'bmf_status':l:bmf.bmf_status,
+                \  'bmf_timestamp':l:bmf.bmf_timestamp
+                \  }
+                \ }
+    return l:bmf
 endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +127,7 @@ function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{
     let bmfSignName = sign_getplaced('',{'id': a:bmfSignId})[0]['signs'][0]['name'] 
     let bmfColor = a:bmf_color->empty() ? g:bmfflavors["normal"]["bmf_color"] : a:bmf_color 
     " echom "/nbmfColor du create : " .. bmfColor
-    let g:currentText = g:currentRow->getline()->strcharpart(idx, g:max_lenght)
+    let g:currentText = (g:currentRow->getline())->trim()->strcharpart(idx, g:max_lenght)
     let g:currentBuffer = bufnr()
     let g:currentFile = expand("%:p")    
     let g:currentStatus = 1 "status = 0: disabled, 1: enabled"
