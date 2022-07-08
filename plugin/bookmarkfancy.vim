@@ -96,7 +96,18 @@ function! BookMarkFancyFlavor(bmf_flavor = 'normal')
     "set wildmode = g:oldwildmode
 endfunction
 
-function! BookmarkFancySave()
+function! BookMarkFancyUpdate()
+    let l:result = bookmarkfancy#update()
+    if l:result
+        call bmf_sign#sync()
+        call bookmarkfancy#view()
+        echom "Update bookmarkfancy successfully"
+    else 
+        echom "Update bookmarkfancy failed"
+    endif
+endfunction
+
+function! BookMarkFancySave()
     call bmf_sign#sync()
     call bookmarkfancy#save()
 endfunction
@@ -110,7 +121,8 @@ command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancyView call BookMarkFancyView()
 command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
-
+command! BookMarkFancyUpdate call BookMarkFancyUpdate()
+command! BookMarkFancySave call BookMarkFancySave()
 "}}}
 
 " Mapping {{{
@@ -125,6 +137,14 @@ endif
 execute "nnoremap <silent> <Plug>BookMarkFancyRemove :BookMarkFancyRemove<CR>"
 if !hasmapto("<Plug>BookMarkFancyRemove")
     execute "nmap br <Plug>BookMarkFancyRemove"
+endif
+execute "nnoremap <silent> <Plug>BookMarkFancySave :BookMarkFancySave<CR>"
+if !hasmapto("<Plug>BookMarkFancySave")
+    execute "nmap bs <Plug>BookMarkFancySave"
+endif
+execute "nnoremap <silent> <Plug>BookMarkFancyUpdate :BookMarkFancyUpdate<CR>"
+if !hasmapto("<Plug>BookMarkFancyUpdate")
+    execute "nmap bu <Plug>BookMarkFancyUpdate"
 endif
 execute "nnoremap <silent> <Plug>BookMarkFancyView :BookMarkFancyView<CR>"
 if !hasmapto("<Plug>BookMarkFancyView")
