@@ -38,13 +38,13 @@ function! bookmarkfancy#save()
 endfunction    
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#restore()
+" function! bookmarkfancy#load()
 "
 " restore les bookmarks
 " return : rien 
 " !!!!!!!!!! writing in progress...
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#restore(file) "{{{
+function! bookmarkfancy#load(bmfFile) "{{{
     " ne pas tenir compte des buffers d'origine
     " retouver a partir des fenetres ayant les fichiers concernés les buffers
     " pour reinitialiser les signs avec les nouveaux buffers
@@ -58,7 +58,7 @@ function! bookmarkfancy#restore(file) "{{{
     let g:bookmarkfancy_list = []
     let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
     let bufnrlist = []
-    let l:bookmarkfancy_sav_list = eval(readfile(a:file)[0]) 
+    let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0]) 
     for dict in l:bookmarkfancy_sav_list
         let [l:bmf_file_key, l:bmf_file] =[keys(dict)[0], values(dict)[0]]
         "echom l:bmf_file
@@ -74,7 +74,7 @@ function! bookmarkfancy#restore(file) "{{{
                 "TODO: mise à jour(update) ou ecraser(overwrite) ? bookmarkfancy_list 
                 "bmf_sign_id et bmf_buffer
                 "echom bookmarkfancy#setrestore(dict, l:bmfSignId, l:bnr)
-                call add(g:bookmarkfancy_list, bookmarkfancy#setrestore(dict, l:bmfSignId, l:bnr))
+                call add(g:bookmarkfancy_list, bookmarkfancy#restore(dict, l:bmfSignId, l:bnr))
             else
                 "echom "file " .. l:bmf_file.bmf_file .. " isn't in a buffer"
             endif
@@ -89,10 +89,10 @@ endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#setrestore()
+" function! bookmarkfancy#restore()
 "
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#setrestore(bmfSaveList, bmfSignId, bmfBuffer)
+function! bookmarkfancy#restore(bmfSaveList, bmfSignId, bmfBuffer) "{{{
 let l:bmf = values(a:bmfSaveList)[0]
 let l:key_row = keys(a:bmfSaveList)[0]
 let  l:bmf  = {l:key_row: 
@@ -110,6 +110,7 @@ let  l:bmf  = {l:key_row:
                 \ }
     return l:bmf
 endfunction
+ "}}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#create(bmfSign, bmfColor)

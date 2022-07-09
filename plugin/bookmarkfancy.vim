@@ -112,8 +112,17 @@ function! BookMarkFancySave()
     call bookmarkfancy#save()
 endfunction
 
+function! BookMarkFancyLoad(bmf_file)
+    call bmf_sign#init()
+    call bookmarkfancy#load(a:bmf_file)
+endfunction
+
 function! ListFlavors(A,L,P)
     return keys(g:bmfflavors)
+endfunction
+
+function! LoadFile(A,L,P)
+   return globpath(&rtp, "**/*\.sav", 0, 1)->sort()->uniq() 
 endfunction
 
 command! BookMarkFancyTest call BookMarkFancyTest()
@@ -123,17 +132,24 @@ command! BookMarkFancyView call BookMarkFancyView()
 command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
 command! BookMarkFancyUpdate call BookMarkFancyUpdate()
 command! BookMarkFancySave call BookMarkFancySave()
+command! -nargs=? -complete=customlist,LoadFile BookMarkFancyLoad call BookMarkFancyLoad(<f-args>)
 "}}}
 
 " Mapping {{{
-execute "nnoremap <silent> <Plug>BookMarkFancyTest :BookMarkFancyTest<CR>"
-if !hasmapto("<Plug>BookMarkFancyTest")
-    execute "nmap bt <Plug>BookMarkFancyTest"
-endif
+set wcm=<C-Z>
 execute "nnoremap <silent> <Plug>BookMarkFancyCreate :BookMarkFancyCreate<CR>"
 if !hasmapto("<Plug>BookMarkFancyCreate")
     execute "nmap bc <Plug>BookMarkFancyCreate"
 endif
+execute "nnoremap <Plug>BookMarkFancyFlavor :BookMarkFancyFlavor<space><C-Z><C-Z>"
+if !hasmapto("<Plug>BookMarkFancyFlavor")
+    execute "nmap bf <Plug>BookMarkFancyFlavor"
+endif
+execute "nnoremap <Plug>BookMarkFancyLoad :BookMarkFancyLoad"
+if !hasmapto("<Plug>BookMarkFancyLoad")
+    execute "nmap bl <Plug>BookMarkFancyLoad"
+endif
+
 execute "nnoremap <silent> <Plug>BookMarkFancyRemove :BookMarkFancyRemove<CR>"
 if !hasmapto("<Plug>BookMarkFancyRemove")
     execute "nmap br <Plug>BookMarkFancyRemove"
@@ -141,6 +157,10 @@ endif
 execute "nnoremap <silent> <Plug>BookMarkFancySave :BookMarkFancySave<CR>"
 if !hasmapto("<Plug>BookMarkFancySave")
     execute "nmap bs <Plug>BookMarkFancySave"
+endif
+execute "nnoremap <silent> <Plug>BookMarkFancyTest :BookMarkFancyTest<CR>"
+if !hasmapto("<Plug>BookMarkFancyTest")
+    execute "nmap bt <Plug>BookMarkFancyTest"
 endif
 execute "nnoremap <silent> <Plug>BookMarkFancyUpdate :BookMarkFancyUpdate<CR>"
 if !hasmapto("<Plug>BookMarkFancyUpdate")
@@ -150,11 +170,7 @@ execute "nnoremap <silent> <Plug>BookMarkFancyView :BookMarkFancyView<CR>"
 if !hasmapto("<Plug>BookMarkFancyView")
     execute "nmap bv <Plug>BookMarkFancyView"
 endif
-set wcm=<C-Z>
-execute "nnoremap <Plug>BookMarkFancyFlavor :BookMarkFancyFlavor<space><C-Z><C-Z>"
-if !hasmapto("<Plug>BookMarkFancyFlavor")
-    execute "nmap bf <Plug>BookMarkFancyFlavor"
-endif
+
 "}}}
 "
 " Init {{{
