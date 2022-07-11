@@ -1,14 +1,22 @@
-function! bmf_sign#init()
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bmf_sign#init()
+" initialisation des noms de sign aux saveurs (flavors)
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bmf_sign#init() "{{{
     "echo "Sign initialized"
     call bmf_sign#highlights()
     for sufx in keys(copy(g:bmfflavors))->map('v:val')
         execute "sign define sign_" . sufx . "  texthl=BookmarkfancySign". sufx ." text=" . g:bmfflavors[sufx]["bmf_sign"]
     endfor
 endfunction
+"}}}
 
-
-function! bmf_sign#highlights(flavor_name = "normal")
-    " echo "Sign highlighted"
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" 
+" function! bmf_sign#highlights()
+" attribut la colorisation des signes (foreground eet background)
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bmf_sign#highlights(flavor_name = "normal") "{{{
     let gui_fg_flavor = g:bmfcolors["default"]["fg_gui"]
     let term_fg_flavor = g:bmfcolors["default"]["fg_term"]
     if &term=~'xterm'
@@ -32,15 +40,18 @@ function! bmf_sign#highlights(flavor_name = "normal")
         " highlight default link BookmarkfancySign  BookmarkfancySignDefault
     endfor
 endfunction
+"}}}
 
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" 
+" function! bmf_sign#sync()
+" synchronise la liste des bookmarks avec nouvelle position des signes
+" cas des ajout/suppression de ligne
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bmf_sign#sync(buf_name ='')
     echom "--> appel bmf_sign#sync()"
     let g:buf = a:buf_name->empty()? bufname("%") : a:buf_name
     let g:sign_list = sign_getplaced()
-    " echom " Liste de signes : "
-    " echom g:sign_list
-    " echom " liste des bookmarkfancy_list : "
-    " echom g:bookmarkfancy_list
     for signdic in g:sign_list
         let iddx = 0
         while iddx <# len(signdic['signs'])
@@ -58,17 +69,28 @@ function! bmf_sign#sync(buf_name ='')
     endfor
 endfunction
 
-function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0, bmf_buffer = 0 )
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" 
+" function! bmf_sign#place()
+" positionne un signe à la position en cours 
+" return: id unique du signe
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0, bmf_buffer = 0 ) "{{{
     let g:currentRow = line(".")
     let g:bmf_create = []
     let g:buf = a:bmf_buffer ==# 0? bufnr(expand("%:p")) : a:bmf_buffer
     let l:sign_name = g:bmfflavors->has_key(a:bmf_flavor)? 'sign_' . a:bmf_flavor : 'sign_normal'
     let id = sign_place(a:bmf_sign_id, '', l:sign_name, g:buf, {'lnum':g:currentRow})
-    "echom "id sign : " . id
     return id
 endfunction
+"}}}
 
-function! bmf_sign#unplace(bmf_sign_id = 0) abort
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" 
+" function! bmf_sign#unplace()
+" enleve le signe de tous les buffers
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bmf_sign#unplace(bmf_sign_id = 0) abort "{{{
     try
         "echom "blox try"
         exe "silent! call sign_unplace('*', {'id' : a:bmf_sign_id})"
@@ -79,3 +101,4 @@ function! bmf_sign#unplace(bmf_sign_id = 0) abort
         "echom "id :".a:bmf_sign_id
     endtry
 endfunction
+"}}}
