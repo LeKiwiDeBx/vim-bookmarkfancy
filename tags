@@ -33,14 +33,14 @@ bmf_sign#unplace	autoload/bmf_sign.vim	/^function! bmf_sign#unplace(bmf_sign_id 
 bookmarkfancy#create	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{$/;"	f
 bookmarkfancy#design	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#design(bmfSign, bmfColor) "{{{$/;"	f
 bookmarkfancy#flavor	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{$/;"	f
-bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init()$/;"	f
+bookmarkfancy#init	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#init() "{{{$/;"	f
 bookmarkfancy#load	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#load(bmfFile) "{{{$/;"	f
 bookmarkfancy#read	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#read(bmfLineNumber = 0) "{{{$/;"	f
 bookmarkfancy#remove	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#remove(line_number = 0) "{{{$/;"	f
 bookmarkfancy#restore	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#restore(bmfSaveList, bmfSignId, bmfBuffer) "{{{$/;"	f
-bookmarkfancy#save	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#save()$/;"	f
+bookmarkfancy#save	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#save() "{{{$/;"	f
 bookmarkfancy#sort	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{$/;"	f
-bookmarkfancy#test	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#test()$/;"	f
+bookmarkfancy#test	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#test() "{{{$/;"	f
 bookmarkfancy#update	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#update(bmfLineNumber = 0, what = 'bmf_txt') "{{{$/;"	f
 bookmarkfancy#view	autoload/bookmarkfancy.vim	/^function! bookmarkfancy#view(how = 'ALL') "{{{$/;"	f
 g:bmf_fg	plugin/bookmarkfancy.vim	/^    let g:bmf_fg = "fg_term"$/;"	v

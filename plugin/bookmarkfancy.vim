@@ -18,7 +18,7 @@ let g:bmfcolors={
             \ "notice":{"fg_term":"25","fg_gui":"#005FAF"},
             \ "warning":{"fg_term":"190","fg_gui":"#DFFF00"},
             \ "alert":{"fg_term":"160","fg_gui":"#D70000"},
-            \ "pass":{"fg_term":"34","fg_gui":"#00AF00"}
+            \ "pass": {"fg_term":"34","fg_gui":"#00AF00"}
             \ }
 
 "if has("terminfo")
@@ -80,8 +80,16 @@ function! s:BookmarkFancyRead(line_number)
 endfunction
 
 function! BookMarkFancyRemove(line_number = 0)
+    if (confirm("Delete this bookmarkfancy at line "..line(".").."? ", "&Yes\n&No", 2) !=# 1)
+        echom "Ignore remove!"
+        return
+    endif    
     let l:bmf_sign_id = bookmarkfancy#remove(a:line_number)
-    echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'sign remove at line ' .. a:line_number : 'no action to do'
+    if l:bmf_sign_id ==# v:false 
+        echom "Ignore remove!"
+        return
+    endif    
+    echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'sign remove at line ' .. a:line_number==#0?line("."):a:line_number : 'no action to do'
     return 1
 endfunction
 
@@ -107,9 +115,9 @@ function! BookMarkFancyUpdate()
 endfunction
 
 function! BookMarkFancyView()
-    belowright copen
     call bmf_sign#sync()
     call bookmarkfancy#view()
+    belowright copen
 endfunction
 
 " functions annexes {{{
@@ -126,6 +134,7 @@ endfunction
 command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
 command! -nargs=? -complete=customlist,LoadFile BookMarkFancyLoad call BookMarkFancyLoad(<f-args>)
+"command! -nargs=? -complete=file -bar BookMarkFancyLoad call BookMarkFancyLoad(<f-args>)
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancySave call BookMarkFancySave()
 command! BookMarkFancyTest call BookMarkFancyTest()

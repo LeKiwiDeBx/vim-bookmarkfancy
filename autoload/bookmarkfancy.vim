@@ -6,103 +6,6 @@ set cpo&vim
 " finish
 "endif
 
-function! bookmarkfancy#init()
-    let g:loaded_bookmarkfancy = 1
-    let g:bookmarkfancy_list = []
-endfunction
-
-function! bookmarkfancy#test()
-    return "This is bookmarkfancy vim plugin :)"
-endfunction
-
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#save()
-"
-" sauvegarde les bookmarks
-" return : true or false ;)
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#save()
-    "writefile /readfile
-    const l:file = "bmf_bookmarks.sav"
-    let l:directory = expand('%:p:h')
-    if l:directory->filewritable()
-        let l:file_save = l:directory."/".l:file
-        if writefile([json_encode(copy(g:bookmarkfancy_list))], l:file_save, "s") ==# -1
-            echom "Save File Error"
-            return v:false
-        else
-            echom "Save File Success"
-        endif
-    endif
-    return v:true
-endfunction    
-
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#load()
-"
-" restore les bookmarks
-" return : rien 
-" !!!!!!!!!! writing in progress...
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#load(bmfFile) "{{{
-    " fonctions utiles winbufnr() bufnr() bufwinid() bufwinnr() bufname() bufexists() bufloaded(nomm complet fichier)
-    " getbufinfo().name ie
-    " sign_placelist({list})
-    " liste des buffers en cours
-    "  map(getbufinfo({'buflisted': 1}), 'v:val.name')
-    "  avec filter
-    "  map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
-    let l:isload = v:false
-    let g:bookmarkfancy_list = []
-    let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
-    let bufnrlist = []
-    let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0]) 
-    for dict in l:bookmarkfancy_sav_list
-        let [l:bmf_file_key, l:bmf_file] =[keys(dict)[0], values(dict)[0]]
-        for buf_name in l:buf_list
-            if buf_name ==# l:bmf_file.bmf_file
-                let l:bnr = bufnr(l:bmf_file.bmf_file) 
-                call add(l:bufnrlist,l:bnr) 
-                let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row}) 
-                call add(g:bookmarkfancy_list, bookmarkfancy#restore(dict, l:bmfSignId, l:bnr))
-                let l:isload = v:true
-            endif
-        endfor
-    endfor
-    return l:isload 
-endfunction
-" }}}
-
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#restore()
-" 
-" retablit un bookmark à partir de la liste des bookmarks, et modifie l'Id du signe et le buffer
-" en cours
-" bmfSaveList: liste sauvée
-" bmfSignId: l'id du sign recréé
-" bmfBuffer: le buffer en cours corrrespondant pour le bookmark
-" return: le bookmark à inserer dans la liste
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#restore(bmfSaveList, bmfSignId, bmfBuffer) "{{{
-    let l:bmf = values(a:bmfSaveList)[0]
-    let l:key_row = keys(a:bmfSaveList)[0]
-    let  l:bmf  = {l:key_row: 
-                \  {'bmf_row':l:bmf.bmf_row,
-                \  'bmf_sign_id': a:bmfSignId,
-                \  'bmf_sign':l:bmf.bmf_sign,  
-                \  'bmf_sign_name':l:bmf.bmf_sign_name,
-                \  'bmf_color':l:bmf.bmf_color,
-                \  'bmf_txt':l:bmf.bmf_txt,
-                \  'bmf_buffer':a:bmfBuffer,
-                \  'bmf_file':l:bmf.bmf_file,
-                \  'bmf_status':l:bmf.bmf_status,
-                \  'bmf_timestamp':l:bmf.bmf_timestamp
-                \  }
-                \ }
-    return l:bmf
-endfunction
-"}}}
-
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#create(bmfSign, bmfColor)
 "
@@ -144,16 +47,23 @@ endfunction
 " function! bookmarkfancy#design(bmfSign, bmfColor)
 "
 " change en une passe le visuel symbole/couleur du bmf  
-" bmfSign :     un caractère symbolique
-" bmfColor :    une couleur du symbole
-" return :      rien 
+" bmfSign:     un dictionnaire caractère symbolique
+" bmfColor:    un dictionnaire couleur du symbole
+" return:      rien 
+" TODO externaliser dans le plugin la demande de 3 parametres pour creer bmfSign et bmfColor
+"  /!\ nom [nom de la saveur /ou automatique ] 
+"  sign [symbole  -complete=list avec input]
+"  color [couleur -complete=list avec input] /!\
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#design(bmfSign, bmfColor) "{{{
-    let g:currentRow = line(".")
-    if g:bookmarkfancy->has_key(g:currentRow)
-        let g:bookmarkfancy["g:currentRow"] ={bmf_sign:a:bmfSign, bmf_color:a:bmfColor}
-    endif
-endfunction
+    call extend(g:bmfsigns, a:bmfSign)
+    call extend(g:bmfcolors, a:bmfColor)
+    call extend(g:bmfflavors, {keys(a:bmfColor)[0]:
+                                \ {"bmf_sign":g:bmfsigns[keys(a:bmfSign)[0]]["bmf_bookmark"],
+                                \  "bmf_color":g:bmfcolors[keys(a:bmfColor)[0]][g:bmf_fg]
+                                \ }
+                             \ })
+                          endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -184,23 +94,50 @@ endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#remove()
+" function! bookmarkfancy#init()
 "
-" enlève la ligne en cours du dict. 
-" param: aucun
-" return : vrai si il y'a bmf 
+" quelques init (to completed)
+" return:
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#remove(line_number = 0) "{{{
-    let g:currentRow = a:line_number ==# 0 ? line(".") : a:line_number
-    let l:idx = 0
-    for bookmarkfancy_dict in g:bookmarkfancy_list
-        if values(bookmarkfancy_dict)[0]['bmf_row'] ==# g:currentRow
-            call remove(g:bookmarkfancy_list, l:idx)
-            return  values(bookmarkfancy_dict)[0]['bmf_sign_id']
-        endif
-        let l:idx += 1
-    endfor 
-    return v:false
+function! bookmarkfancy#init() "{{{
+    let g:loaded_bookmarkfancy = 1
+    let g:bookmarkfancy_list = []
+endfunction
+"}}}
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#load()
+"
+" restore les bookmarks
+" return : rien 
+" !!!!!!!!!! writing in progress...
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#load(bmfFile) "{{{
+    " fonctions utiles winbufnr() bufnr() bufwinid() bufwinnr() bufname() bufexists() bufloaded(nomm complet fichier)
+    " getbufinfo().name ie
+    " sign_placelist({list})
+    " liste des buffers en cours
+    "  map(getbufinfo({'buflisted': 1}), 'v:val.name')
+    "  avec filter
+    "  map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
+    let l:isload = v:false
+    let g:bookmarkfancy_list = []
+    let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
+    let bufnrlist = []
+    let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0]) 
+    for dict in l:bookmarkfancy_sav_list
+        let [l:bmf_file_key, l:bmf_file] =[keys(dict)[0], values(dict)[0]]
+        for buf_name in l:buf_list
+            if buf_name ==# l:bmf_file.bmf_file
+                let l:bnr = bufnr(l:bmf_file.bmf_file) 
+                call add(l:bufnrlist,l:bnr) 
+                let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row}) 
+                call add(g:bookmarkfancy_list, bookmarkfancy#restore(dict, l:bmfSignId, l:bnr))
+                let l:isload = v:true
+            endif
+        endfor
+    endfor
+    return l:isload 
 endfunction
 " }}}
 
@@ -227,23 +164,107 @@ endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#view(how)
+" function! bookmarkfancy#remove()
 "
-" affiche dans quick la liste des bookmarks
-" param: how quel type affichage complet(tous les fichiers), partiel, actif/inactif
-" return: rien
+" enlève la ligne en cours du dict. 
+" param: aucun
+" return : vrai si il y'a bmf 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#view(how = 'ALL') "{{{
-    const title = "bookmarkfancy's signs"
-    let qflist = []
-    for bmf_dic in g:bookmarkfancy_list
-        for val in values(bmf_dic)
-            let dx_items = {'lnum':val['bmf_row'], 'text':val['bmf_txt'], 'bufnr':val['bmf_buffer']}
-            call add(qflist, dx_items)
-        endfor
+function! bookmarkfancy#remove(line_number = 0) "{{{
+    let g:currentRow = a:line_number ==# 0 ? line(".") : a:line_number
+    let l:idx = 0
+    for bookmarkfancy_dict in g:bookmarkfancy_list
+        if values(bookmarkfancy_dict)[0]['bmf_row'] ==# g:currentRow
+            call remove(g:bookmarkfancy_list, l:idx)
+            return  values(bookmarkfancy_dict)[0]['bmf_sign_id']
+        endif
+        let l:idx += 1
+    endfor 
+    return v:false
+endfunction
+" }}}
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#restore()
+" 
+" retablit un bookmark à partir de la liste des bookmarks, et modifie l'Id du signe et le buffer
+" en cours
+" bmfSaveList: liste sauvée
+" bmfSignId: l'id du sign recréé
+" bmfBuffer: le buffer en cours corrrespondant pour le bookmark
+" return: le bookmark à inserer dans la liste
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#restore(bmfSaveList, bmfSignId, bmfBuffer) "{{{
+    let l:bmf = values(a:bmfSaveList)[0]
+    let l:key_row = keys(a:bmfSaveList)[0]
+    let  l:bmf  = {l:key_row: 
+                \  {'bmf_row':l:bmf.bmf_row,
+                \  'bmf_sign_id': a:bmfSignId,
+                \  'bmf_sign':l:bmf.bmf_sign,  
+                \  'bmf_sign_name':l:bmf.bmf_sign_name,
+                \  'bmf_color':l:bmf.bmf_color,
+                \  'bmf_txt':l:bmf.bmf_txt,
+                \  'bmf_buffer':a:bmfBuffer,
+                \  'bmf_file':l:bmf.bmf_file,
+                \  'bmf_status':l:bmf.bmf_status,
+                \  'bmf_timestamp':l:bmf.bmf_timestamp
+                \  }
+                \ }
+    return l:bmf
+endfunction
+"}}}
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#save()
+"
+" sauvegarde les bookmarks
+" return : true or false ;)
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#save() "{{{
+    "writefile /readfile
+    const l:file = "bmf_bookmarks.sav"
+    let l:directory = expand('%:p:h')
+    if l:directory->filewritable()
+        let l:file_save = l:directory."/".l:file
+        if writefile([json_encode(copy(g:bookmarkfancy_list))], l:file_save, "s") ==# -1
+            echom "Save File Error"
+            return v:false
+        else
+            echom "Save File Success"
+        endif
+    endif
+    return v:true
+endfunction    
+"}}}
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#sort(bmfOrder) 
+" dict2list avec perte de la clé dictionnaire (keys) 
+" bmfOrder : ordre du tri 'ASC' ou 'DESC'
+" return : une liste de liste (nested list)
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
+    let g:dic_row_list = []
+    let g:bmfList = []
+    let g:bmfDic = []
+    for dic_row in g:bookmarkfancy_list    
+        let g:dic_row_list = g:dic_row_list->add(values(dic_row)) 
     endfor
-    call setqflist([],'r',{'items':qflist, 'title':title})
-    call setqflist(getqflist()->sort({l1,l2 -> l1.lnum - l2.lnum}), 'r')
+    let g:bmfDic = g:dic_row_list->sort("CompareRow")
+    for row in a:bmfOrder ==# 'ASC'? g:bmfDic : g:bmfDic->reverse() 
+        let g:bmfList = g:bmfList->add(row[0])
+    endfor
+    return g:bmfList
+endfunction   
+" }}}  
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#test()
+" Hum? test may be...
+" return:
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#test() "{{{
+    return "This is bookmarkfancy vim plugin :)"
 endfunction
 "}}}
 
@@ -275,6 +296,27 @@ endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#view(how)
+"
+" affiche dans quick la liste des bookmarks
+" param: how quel type affichage complet(tous les fichiers), partiel, actif/inactif
+" return: rien
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#view(how = 'ALL') "{{{
+    const title = "bookmarkfancy's signs"
+    let qflist = []
+    for bmf_dic in g:bookmarkfancy_list
+        for val in values(bmf_dic)
+            let dx_items = {'lnum':val['bmf_row'], 'text':val['bmf_txt'], 'bufnr':val['bmf_buffer']}
+            call add(qflist, dx_items)
+        endfor
+    endfor
+    call setqflist([],'r',{'items':qflist, 'title':title, 'idx':'$'})
+    call setqflist(getqflist()->sort({l1,l2 -> l1.lnum - l2.lnum}), 'r')
+endfunction
+"}}}
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! CompareRow(row1, row2)
 " classement des lignes par ordre croissant
 " return: fonction annexe
@@ -284,28 +326,6 @@ function! CompareRow(row1, row2) "{{{
 endfunction
 "}}}
 
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#sort(bmfOrder) 
-" dict2list avec perte de la clé dictionnaire (keys) 
-" bmfOrder : ordre du tri 'ASC' ou 'DESC'
-" return : une liste de liste (nested list)
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
-    let g:dic_row_list = []
-    let g:bmfList = []
-    let g:bmfDic = []
-    for dic_row in g:bookmarkfancy_list    
-        let g:dic_row_list = g:dic_row_list->add(values(dic_row)) 
-    endfor
-    let g:bmfDic = g:dic_row_list->sort("CompareRow")
-    for row in a:bmfOrder ==# 'ASC'? g:bmfDic : g:bmfDic->reverse() 
-        let g:bmfList = g:bmfList->add(row[0])
-    endfor
-    return g:bmfList
-endfunction   
-" }}}  
-
 let &cpo = s:save_cpo
 unlet s:save_cpo
-
 " }}}
