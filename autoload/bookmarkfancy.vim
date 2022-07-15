@@ -51,19 +51,19 @@ endfunction
 " bmfColor:    un dictionnaire couleur du symbole
 " return:      rien 
 " TODO externaliser dans le plugin la demande de 3 parametres pour creer bmfSign et bmfColor
-"  /!\ nom [nom de la saveur /ou automatique ] 
-"  sign [symbole  -complete=list avec input]
+"  /!\ nom [nom de la saveur /ou automatique ] ei: flavor_001  ou 10 char
+"  sign [symbole  -complete=list avec input]   ei: let bmf_symb = [, , , ¶, , , , , , , , , , , , , ]
 "  color [couleur -complete=list avec input] /!\
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#design(bmfSign, bmfColor) "{{{
     call extend(g:bmfsigns, a:bmfSign)
     call extend(g:bmfcolors, a:bmfColor)
     call extend(g:bmfflavors, {keys(a:bmfColor)[0]:
-                                \ {"bmf_sign":g:bmfsigns[keys(a:bmfSign)[0]]["bmf_bookmark"],
-                                \  "bmf_color":g:bmfcolors[keys(a:bmfColor)[0]][g:bmf_fg]
-                                \ }
-                             \ })
-                          endfunction
+                \ {"bmf_sign":g:bmfsigns[keys(a:bmfSign)[0]]["bmf_bookmark"],
+                \  "bmf_color":g:bmfcolors[keys(a:bmfColor)[0]][g:bmf_fg]
+                \ }
+                \ })
+endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
