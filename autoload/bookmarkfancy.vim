@@ -55,7 +55,25 @@ endfunction
 "  sign [symbole  -complete=list avec input]   ei: let bmf_symb = [, , , ¶, , , , , , , , , , , , , ]
 "  color [couleur -complete=list avec input] /!\
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#design(bmfSign, bmfColor) "{{{
+function! ListSymb(A, L, P)
+    let g:bmf_symb = ["","", "", "¶", "","","", "", "", "", "", "", "", "", "", "", ""]
+    return  g:bmf_symb->sort()->uniq()
+endfunction
+
+function! ListColor(ArgLead, CmdLine, CursorPos)
+    let g:bmf_color = ["red", "green", "blue", "navy blue"]
+    return filter(g:bmf_color, 'v:val =~ "' . a:ArgLead . '"')
+endfunction    
+
+function! bookmarkfancy#design(bmfSign = "X", bmfColor = "#0000FF") "{{{
+    " test input a mettre en amont [plugin] pour fabriquer un bmfSign
+    call inputsave()
+    let choiceSign = input("choice the sign: ", "", "customlist,ListSymb")
+    call inputrestore()
+    :redraw
+    call inputsave()
+    let choiceColor = input("choice the color: ", "", "customlist,ListColor")
+    call inputrestore()
     call extend(g:bmfsigns, a:bmfSign)
     call extend(g:bmfcolors, a:bmfColor)
     call extend(g:bmfflavors, {keys(a:bmfColor)[0]:
