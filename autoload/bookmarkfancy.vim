@@ -62,7 +62,7 @@ endfunction
 
 function! ListColor(ArgLead, CmdLine, CursorPos)
     let g:bmf_color = ["red", "green", "blue", "navy blue"]
-    return filter(g:bmf_color, 'v:val =~ "' . a:ArgLead . '"')
+    return copy(g:bmf_color)->filter('v:val =~ "' . a:ArgLead . '"')
 endfunction    
 
 function! bookmarkfancy#design(bmfSign = "X", bmfColor = "#0000FF") "{{{
