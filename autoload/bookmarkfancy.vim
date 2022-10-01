@@ -19,17 +19,17 @@ function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{
     let g:max_lenght = 45
     let g:currentRow = line(".")
     let bmfSign = a:bmf_sign->empty() ? g:bmfflavors["normal"]["bmf_sign"] :  a:bmf_sign
-    let bmfSignName = sign_getplaced('',{'id': a:bmfSignId})[0]['signs'][0]['name'] 
-    let bmfColor = a:bmf_color->empty() ? g:bmfflavors["normal"]["bmf_color"] : a:bmf_color 
+    let bmfSignName = sign_getplaced('',{'id': a:bmfSignId})[0]['signs'][0]['name']
+    let bmfColor = a:bmf_color->empty() ? g:bmfflavors["normal"]["bmf_color"] : a:bmf_color
     let g:currentText = (g:currentRow->getline())->trim()->strcharpart(idx, g:max_lenght)
     let g:currentBuffer = bufnr()
-    let g:currentFile = expand("%:p")    
+    let g:currentFile = expand("%:p")
     let g:currentStatus = 1 "status = 0: disabled, 1: enabled"
     let g:timeStamp = localtime()
-    let g:bookmarkfancy = {g:currentRow: 
+    let g:bookmarkfancy = {g:currentRow:
                 \              {'bmf_row':g:currentRow,
                 \               'bmf_sign_id': a:bmfSignId,
-                \               'bmf_sign':bmfSign,  
+                \               'bmf_sign':bmfSign,
                 \               'bmf_sign_name':bmfSignName,
                 \               'bmf_color':bmfColor,
                 \               'bmf_txt':g:currentText,
@@ -46,10 +46,10 @@ endfunction
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#design(bmfSign, bmfColor)
 "
-" change en une passe le visuel symbole/couleur du bmf  
+" change en une passe le visuel symbole/couleur du bmf
 " bmfSign:     un dictionnaire caractère symbolique
 " bmfColor:    un dictionnaire couleur du symbole
-" return:      rien 
+" return:      rien
 " TODO externaliser dans le plugin la demande de 3 parametres pour creer bmfSign et bmfColor
 "  /!\ nom [nom de la saveur /ou automatique ] ei: flavor_001  ou 10 char
 "  sign [symbole  -complete=list avec input]   ei: let bmf_symb = [, , , ¶, , , , , , , , , , , , , ]
@@ -65,14 +65,14 @@ function! ListColor(ArgLead, CmdLine, CursorPos)
     :redraw
     let g:bmf_color = ["black","maroon" ,"green","olive","navy","purple","teal","silver","grey","red","lime","yellow","blue","fuschia","aqua","white"]
     return copy(g:bmf_color)->filter('v:val =~ "' . a:ArgLead . '"')->sort()
-endfunction    
+endfunction
 
 function! s:doSign(bmfSignSymbol)
-    return {'bmf_custom':{'bmf_flag': '', 'bmf_bookmark': a:bmfSignSymboal, 'bmf_alt': '¶'}}
-endfunction    
+    return {'bmf_custom':{'bmf_flag': '', 'bmf_bookmark': a:bmfSignSymbol, 'bmf_alt': '¶'}}
+endfunction
 
 function! s:doColor(bmfColor)
-    let g:idxName += 1 
+    let g:idxName += 1
     let l:dic_color = {"black":"#000000","maroon":"#800000" ,"green":"#008000","olive":"#808000","navy":"#000080","purple":"#800080","teal":"#008080","silver":"#C0C0C0","grey":"#808080","red":"#FF0000","lime":"#00FF00","yellow":"#FFFF00","blue":"#0000FF","fuschia":"#FF00FF","aqua":"00FFFF","white":"#FFFFFF"}
     return {"custom_flavor" .. g:idxName:{"fg_term":a:bmfColor,"fg_gui":l:dic_color[a:bmfColor]}}
 endfunction
@@ -86,6 +86,8 @@ function! bookmarkfancy#design(bmfSign = "X", bmfColor = "#0000FF") "{{{
     call inputsave()
     let choiceColor = input("choice the color: ", "", "customlist,ListColor")
     call inputrestore()
+    " TODO ecrire avec doSign et doColor l'appel à bookmarkfancy#design(doSign(choiceSign), doColor(choiceColor))
+    " fin test
     call extend(g:bmfsigns, a:bmfSign)
     call extend(g:bmfcolors, a:bmfColor)
     call extend(g:bmfflavors, {keys(a:bmfColor)[0]:
@@ -97,11 +99,11 @@ endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#flavor(bmfFlavor) 
+" function! bookmarkfancy#flavor(bmfFlavor)
 "
-" change en une passe le visuel avec une saveur prédeterminée  bmf  
+" change en une passe le visuel avec une saveur prédeterminée  bmf
 " bmfFlavor : combo symbole/couleur ie: g:bmfflavors["normal"] normal est une flavor
-" return : rien 
+" return : rien
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
     let g:count += 1
@@ -113,13 +115,13 @@ function! bookmarkfancy#flavor(bmf_flavor = 'normal') "{{{
             let bmf_sign_id =  values(bookmarkfancy_dict)[0]['bmf_sign_id']
             let bmf_key = keys(bookmarkfancy_dict)[0]
             call bmf_sign#place(a:bmf_flavor, bmf_sign_id)
-            let bmf_sign_name = sign_getplaced('',{'id':bmf_sign_id})[0]['signs'][0]['name'] 
+            let bmf_sign_name = sign_getplaced('',{'id':bmf_sign_id})[0]['signs'][0]['name']
             let g:bookmarkfancy_list[l:idx][bmf_key].bmf_sign_name = bmf_sign_name
             let g:bookmarkfancy_list[l:idx][bmf_key].bmf_sign = g:bmfflavors[l:flavor]["bmf_sign"]
             let g:bookmarkfancy_list[l:idx][bmf_key].bmf_color = g:bmfflavors[l:flavor]["bmf_color"]
         endif
         let l:idx += 1
-    endfor 
+    endfor
 endfunction
 " }}}
 
@@ -139,7 +141,7 @@ endfunction
 " function! bookmarkfancy#load()
 "
 " restore les bookmarks
-" return : rien 
+" return : rien
 " !!!!!!!!!! writing in progress...
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#load(bmfFile) "{{{
@@ -154,20 +156,20 @@ function! bookmarkfancy#load(bmfFile) "{{{
     let g:bookmarkfancy_list = []
     let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
     let bufnrlist = []
-    let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0]) 
+    let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0])
     for dict in l:bookmarkfancy_sav_list
         let [l:bmf_file_key, l:bmf_file] =[keys(dict)[0], values(dict)[0]]
         for buf_name in l:buf_list
             if buf_name ==# l:bmf_file.bmf_file
-                let l:bnr = bufnr(l:bmf_file.bmf_file) 
-                call add(l:bufnrlist,l:bnr) 
-                let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row}) 
+                let l:bnr = bufnr(l:bmf_file.bmf_file)
+                call add(l:bufnrlist,l:bnr)
+                let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row})
                 call add(g:bookmarkfancy_list, bookmarkfancy#restore(dict, l:bmfSignId, l:bnr))
                 let l:isload = v:true
             endif
         endfor
     endfor
-    return l:isload 
+    return l:isload
 endfunction
 " }}}
 
@@ -179,13 +181,13 @@ endfunction
 " return: le bmf
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#read(bmfLineNumber = 0) "{{{
-    let g:currentRow = a:bmfLineNumber ==# 0 ? line(".")  : a:bmfLineNumber 
+    let g:currentRow = a:bmfLineNumber ==# 0 ? line(".")  : a:bmfLineNumber
     if !g:bookmarkfancy_list->empty()
-        for dic_row in g:bookmarkfancy_list 
+        for dic_row in g:bookmarkfancy_list
             if !dic_row->empty()
-                if values(dic_row)[0]['bmf_row'] ==# g:currentRow 
+                if values(dic_row)[0]['bmf_row'] ==# g:currentRow
                     return values(dic_row)[0]
-                endif    
+                endif
             endif
         endfor
     endif
@@ -196,9 +198,9 @@ endfunction
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#remove()
 "
-" enlève la ligne en cours du dict. 
+" enlève la ligne en cours du dict.
 " param: aucun
-" return : vrai si il y'a bmf 
+" return : vrai si il y'a bmf
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#remove(line_number = 0) "{{{
     let g:currentRow = a:line_number ==# 0 ? line(".") : a:line_number
@@ -209,14 +211,14 @@ function! bookmarkfancy#remove(line_number = 0) "{{{
             return  values(bookmarkfancy_dict)[0]['bmf_sign_id']
         endif
         let l:idx += 1
-    endfor 
+    endfor
     return v:false
 endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#restore()
-" 
+"
 " retablit un bookmark à partir de la liste des bookmarks, et modifie l'Id du signe et le buffer
 " en cours
 " bmfSaveList: liste sauvée
@@ -227,10 +229,10 @@ endfunction
 function! bookmarkfancy#restore(bmfSaveList, bmfSignId, bmfBuffer) "{{{
     let l:bmf = values(a:bmfSaveList)[0]
     let l:key_row = keys(a:bmfSaveList)[0]
-    let  l:bmf  = {l:key_row: 
+    let  l:bmf  = {l:key_row:
                 \  {'bmf_row':l:bmf.bmf_row,
                 \  'bmf_sign_id': a:bmfSignId,
-                \  'bmf_sign':l:bmf.bmf_sign,  
+                \  'bmf_sign':l:bmf.bmf_sign,
                 \  'bmf_sign_name':l:bmf.bmf_sign_name,
                 \  'bmf_color':l:bmf.bmf_color,
                 \  'bmf_txt':l:bmf.bmf_txt,
@@ -264,12 +266,12 @@ function! bookmarkfancy#save() "{{{
         endif
     endif
     return v:true
-endfunction    
+endfunction
 "}}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#sort(bmfOrder) 
-" dict2list avec perte de la clé dictionnaire (keys) 
+" function! bookmarkfancy#sort(bmfOrder)
+" dict2list avec perte de la clé dictionnaire (keys)
 " bmfOrder : ordre du tri 'ASC' ou 'DESC'
 " return : une liste de liste (nested list)
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -277,16 +279,16 @@ function! bookmarkfancy#sort(bmfOrder = 'ASC') "{{{
     let g:dic_row_list = []
     let g:bmfList = []
     let g:bmfDic = []
-    for dic_row in g:bookmarkfancy_list    
-        let g:dic_row_list = g:dic_row_list->add(values(dic_row)) 
+    for dic_row in g:bookmarkfancy_list
+        let g:dic_row_list = g:dic_row_list->add(values(dic_row))
     endfor
     let g:bmfDic = g:dic_row_list->sort("CompareRow")
-    for row in a:bmfOrder ==# 'ASC'? g:bmfDic : g:bmfDic->reverse() 
+    for row in a:bmfOrder ==# 'ASC'? g:bmfDic : g:bmfDic->reverse()
         let g:bmfList = g:bmfList->add(row[0])
     endfor
     return g:bmfList
-endfunction   
-" }}}  
+endfunction
+" }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#test()
@@ -300,21 +302,21 @@ endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#update()
-" mise a jour du bmf 
+" mise a jour du bmf
 " param: par defaut ligne en cours et remplacement du texte du bookmark (what else?)
 " return: boolean success or not
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#update(bmfLineNumber = 0, what = 'bmf_txt') "{{{
-    let g:currentRow = a:bmfLineNumber ==# 0 ? line(".")  : a:bmfLineNumber 
+    let g:currentRow = a:bmfLineNumber ==# 0 ? line(".")  : a:bmfLineNumber
     let l:found = v:false
     for bmf_dic in g:bookmarkfancy_list
         for val in values(bmf_dic)
-            if val['bmf_row'] == g:currentRow 
+            if val['bmf_row'] == g:currentRow
                 if a:what ==# 'bmf_txt'
                     call inputsave()
                     let FuncVal = {-> val['bmf_txt']}
                     let l:text = input("Replace the comment (use completion): ","", "custom,FuncVal")
-                    call inputrestore()       
+                    call inputrestore()
                     let val['bmf_txt'] = l:text
                     let l:found = v:true
                 endif
@@ -322,7 +324,7 @@ function! bookmarkfancy#update(bmfLineNumber = 0, what = 'bmf_txt') "{{{
         endfor
     endfor
     return l:found
-endfunction 
+endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -351,7 +353,7 @@ endfunction
 " classement des lignes par ordre croissant
 " return: fonction annexe
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! CompareRow(row1, row2) "{{{ 
+function! CompareRow(row1, row2) "{{{
     return a:row1[0]['bmf_row'] == a:row2[0]['bmf_row']? 0:a:row1[0]['bmf_row'] >a:row2[0]['bmf_row']? 1:-1
 endfunction
 "}}}
