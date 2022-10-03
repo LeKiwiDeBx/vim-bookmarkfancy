@@ -78,16 +78,6 @@ function! s:doColor(bmfColor)
 endfunction
 
 function! bookmarkfancy#design(bmfSign = "X", bmfColor = "#0000FF") "{{{
-    " test input a mettre en amont [plugin] pour fabriquer un bmfSign
-    call inputsave()
-    let choiceSign = input("choice the sign: ", "", "customlist,ListSymb")
-    call inputrestore()
-    :redraw
-    call inputsave()
-    let choiceColor = input("choice the color: ", "", "customlist,ListColor")
-    call inputrestore()
-    " TODO ecrire avec doSign et doColor l'appel à bookmarkfancy#design(doSign(choiceSign), doColor(choiceColor))
-    " fin test
     call extend(g:bmfsigns, a:bmfSign)
     call extend(g:bmfcolors, a:bmfColor)
     call extend(g:bmfflavors, {keys(a:bmfColor)[0]:
@@ -95,6 +85,24 @@ function! bookmarkfancy#design(bmfSign = "X", bmfColor = "#0000FF") "{{{
                 \  "bmf_color":g:bmfcolors[keys(a:bmfColor)[0]][g:bmf_fg]
                 \ }
                 \ })
+endfunction
+" }}}
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" function! bookmarkfancy#custom()
+"
+" créée un bookmark à partir d'une liste signes/couleurs et l'ajoute à liste des saveurs
+" return : rien
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! bookmarkfancy#custom() "{{{
+    call inputsave()
+    let choiceSign = input("choice the sign: ", "", "customlist,ListSymb")
+    call inputrestore()
+    :redraw
+    call inputsave()
+    let choiceColor = input("choice the color: ", "", "customlist,ListColor")
+    call inputrestore()
+    call bookmarkfancy#design(s:doSign(choiceSign), s:doColor(choiceColor))
 endfunction
 " }}}
 
@@ -134,6 +142,7 @@ endfunction
 function! bookmarkfancy#init() "{{{
     let g:loaded_bookmarkfancy = 1
     let g:bookmarkfancy_list = []
+    let g:idxName = 0
 endfunction
 "}}}
 
