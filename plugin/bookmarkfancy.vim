@@ -73,6 +73,10 @@ function! BookMarkFancyLoad(bmf_file)
     call bookmarkfancy#load(a:bmf_file)
 endfunction
 
+function! BookMarkFancyNew()
+    call bookmarkfancy#new()
+endfunction
+
 function! s:BookmarkFancyRead(line_number)
     if (line_number > 0 && line_number <= max_key_bookmarkfancy)
         call bookmarkfancy#read(a:line_number)
@@ -83,12 +87,12 @@ function! BookMarkFancyRemove(line_number = 0)
     if (confirm("Delete this bookmarkfancy at line "..line(".").."? ", "&Yes\n&No", 2) !=# 1)
         echom "Ignore remove!"
         return
-    endif    
+    endif
     let l:bmf_sign_id = bookmarkfancy#remove(a:line_number)
-    if l:bmf_sign_id ==# v:false 
+    if l:bmf_sign_id ==# v:false
         echom "Ignore remove!"
         return
-    endif    
+    endif
     echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'sign remove at line ' .. a:line_number==#0?line("."):a:line_number : 'no action to do'
     return 1
 endfunction
@@ -109,7 +113,7 @@ function! BookMarkFancyUpdate()
         call bmf_sign#sync()
         call bookmarkfancy#view()
         echom "Update bookmarkfancy successfully"
-    else 
+    else
         echom "Update bookmarkfancy failed"
     endif
 endfunction
@@ -126,7 +130,7 @@ function! ListFlavors(A,L,P)
 endfunction
 
 function! LoadFile(A,L,P)
-    return globpath(&rtp, "**/*\.sav", 0, 1)->sort()->uniq() 
+    return globpath(&rtp, "**/*\.sav", 0, 1)->sort()->uniq()
 endfunction
 "}}}
 
