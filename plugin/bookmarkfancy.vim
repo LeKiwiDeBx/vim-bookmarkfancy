@@ -135,6 +135,7 @@ command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
 command! -nargs=? -complete=customlist,LoadFile BookMarkFancyLoad call BookMarkFancyLoad(<f-args>)
 "command! -nargs=? -complete=file -bar BookMarkFancyLoad call BookMarkFancyLoad(<f-args>)
+command! BookMarkFancyNew call BookMarkFancyNew()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancySave call BookMarkFancySave()
 command! BookMarkFancyTest call BookMarkFancyTest()
@@ -158,6 +159,11 @@ endif
 execute "nnoremap <Plug>BookMarkFancyLoad :BookMarkFancyLoad"
 if !hasmapto("<Plug>BookMarkFancyLoad")
     execute "nmap bl <Plug>BookMarkFancyLoad"
+endif
+" bn New
+execute "nnoremap <Plug>BookMarkFancyNew :BookMarkFancyNew"
+if !hasmapto("<Plug>BookMarkFancyNew")
+    execute "nmap bn <Plug>BookMarkFancyNew"
 endif
 " br Remove
 execute "nnoremap <silent> <Plug>BookMarkFancyRemove :BookMarkFancyRemove<CR>"

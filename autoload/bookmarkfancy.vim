@@ -89,12 +89,12 @@ endfunction
 " }}}
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" function! bookmarkfancy#custom()
+" function! bookmarkfancy#new()
 "
-" créée un bookmark à partir d'une liste signes/couleurs et l'ajoute à liste des saveurs
+" créée un nouveau bookmark à partir d'une liste signes/couleurs et l'ajoute à liste des saveurs
 " return : rien
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function! bookmarkfancy#custom() "{{{
+function! bookmarkfancy#new() "{{{
     call inputsave()
     let choiceSign = input("choice the sign: ", "", "customlist,ListSymb")
     call inputrestore()
