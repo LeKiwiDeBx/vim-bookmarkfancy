@@ -18,7 +18,8 @@ let g:bmfcolors={
             \ "notice":{"fg_term":"25","fg_gui":"#005FAF"},
             \ "warning":{"fg_term":"190","fg_gui":"#DFFF00"},
             \ "alert":{"fg_term":"160","fg_gui":"#D70000"},
-            \ "pass": {"fg_term":"34","fg_gui":"#00AF00"}
+            \ "pass": {"fg_term":"34","fg_gui":"#00AF00"},
+            \ "custom":{"fg_term":"white","fg_gui":"#FFFFFF"}
             \ }
 
 "if has("terminfo")
@@ -37,7 +38,8 @@ let g:bmfflavors ={
             \ "warning":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],"bmf_color":g:bmfcolors["warning"][g:bmf_fg]},
             \ "notice":{"bmf_sign":g:bmfsigns["bmf_underline"]["bmf_bookmark"],"bmf_color":g:bmfcolors["normal"][g:bmf_fg]},
             \ "normal":{"bmf_sign":g:bmfsigns["bmf_bold"]["bmf_bookmark"],"bmf_color":g:bmfcolors["normal"][g:bmf_fg]},
-            \ "pass":{"bmf_sign":g:bmfsigns["bmf_star"]["bmf_bookmark"],"bmf_color":g:bmfcolors["pass"][g:bmf_fg]}
+            \ "pass":{"bmf_sign":g:bmfsigns["bmf_star"]["bmf_bookmark"],"bmf_color":g:bmfcolors["pass"][g:bmf_fg]},
+            \ "custom":{"bmf_sign":"@","bmf_color":g:bmfcolors["custom"][g:bmf_fg]}
             \ }
 let g:bookmarkfancy = {}
 
