@@ -77,6 +77,7 @@ endfunction
 
 function! BookMarkFancyNew()
     call bookmarkfancy#new()
+    call bmf_sign#init()
 endfunction
 
 function! s:BookmarkFancyRead(line_number)
