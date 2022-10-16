@@ -74,7 +74,7 @@ endfunction
 function! s:doColor(bmfColor)
     let g:idxName += 1
     let l:dic_color = {"black":"#000000","maroon":"#800000" ,"green":"#008000","olive":"#808000","navy":"#000080","purple":"#800080","teal":"#008080","silver":"#C0C0C0","grey":"#808080","red":"#FF0000","lime":"#00FF00","yellow":"#FFFF00","blue":"#0000FF","fuschia":"#FF00FF","aqua":"00FFFF","white":"#FFFFFF"}
-    return {"custom_flavor" .. g:idxName:{"fg_term":a:bmfColor,"fg_gui":l:dic_color[a:bmfColor]}}
+    return {"custom_" .. g:idxName:{"fg_term":a:bmfColor,"fg_gui":l:dic_color[a:bmfColor]}}
 endfunction
 
 function! bookmarkfancy#design(bmfSign = "X", bmfColor = "#0000FF") "{{{
