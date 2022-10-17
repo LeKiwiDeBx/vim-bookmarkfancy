@@ -12,9 +12,9 @@ endfunction
 "}}}
 
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" 
+"
 " function! bmf_sign#highlights()
-" attribut la colorisation des signes (foreground eet background)
+" attribut la colorisation des signes (foreground et background)
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bmf_sign#highlights(flavor_name = "normal") "{{{
     let gui_fg_flavor = g:bmfcolors["default"]["fg_gui"]
@@ -43,7 +43,7 @@ endfunction
 "}}}
 
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" 
+"
 " function! bmf_sign#sync()
 " synchronise la liste des bookmarks avec nouvelle position des signes
 " cas des ajout/suppression de ligne
@@ -60,9 +60,9 @@ function! bmf_sign#sync(buf_name ='')
             for bmfdict in g:bookmarkfancy_list
                 if values(bmfdict)[0]['bmf_sign_id'] ==# sid
                     let v = values(g:bookmarkfancy_list[bmfidx])[0]
-                    let v['bmf_row'] = slnum 
-                endif    
-                let bmfidx += 1 
+                    let v['bmf_row'] = slnum
+                endif
+                let bmfidx += 1
             endfor
             let iddx += 1
         endwhile
@@ -70,9 +70,9 @@ function! bmf_sign#sync(buf_name ='')
 endfunction
 
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" 
+"
 " function! bmf_sign#place()
-" positionne un signe à la position en cours 
+" positionne un signe à la position en cours
 " return: id unique du signe
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bmf_sign#place(bmf_flavor = 'normal', bmf_sign_id = 0, bmf_buffer = 0 ) "{{{
@@ -86,7 +86,7 @@ endfunction
 "}}}
 
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-" 
+"
 " function! bmf_sign#unplace()
 " enleve le signe de tous les buffers
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
