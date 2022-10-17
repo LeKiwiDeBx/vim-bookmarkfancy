@@ -168,7 +168,7 @@ if !hasmapto("<Plug>BookMarkFancyLoad")
     execute "nmap bl <Plug>BookMarkFancyLoad"
 endif
 " bn New
-execute "nnoremap <Plug>BookMarkFancyNew :BookMarkFancyNew<CR>"
+execute "nnoremap <Plug>BookMarkFancyNew :BookMarkFancyNew<space><C-Z><C-Z>"
 if !hasmapto("<Plug>BookMarkFancyNew")
     execute "nmap bn <Plug>BookMarkFancyNew"
 endif
