@@ -28,7 +28,7 @@ let g:bmfcolors={
 "    "use fg_gui
 "endif
 if &term=~'xterm'
-    let g:bmf_fg= "fg_gui"
+    let g:bmf_fg = "fg_gui"
 else
     let g:bmf_fg = "fg_term"
 endif
@@ -73,6 +73,7 @@ endfunction
 function! BookMarkFancyLoad(bmf_file)
     call bmf_sign#init()
     call bookmarkfancy#load(a:bmf_file)
+    call bmf_sign#init()
 endfunction
 
 function! BookMarkFancyNew()

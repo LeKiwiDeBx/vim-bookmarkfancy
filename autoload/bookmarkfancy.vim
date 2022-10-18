@@ -172,9 +172,22 @@ function! bookmarkfancy#load(bmfFile) "{{{
         for buf_name in l:buf_list
             if buf_name ==# l:bmf_file.bmf_file
                 let l:bnr = bufnr(l:bmf_file.bmf_file)
+                let l:row = l:bmf_file.bmf_row
                 call add(l:bufnrlist,l:bnr)
-                let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:bmf_file.bmf_row})
-                call add(g:bookmarkfancy_list, bookmarkfancy#restore(dict, l:bmfSignId, l:bnr))
+                let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:row})
+                let g:bmf_restore = bookmarkfancy#restore(dict, l:bmfSignId, l:bnr)
+                "echom g:bmf_restore
+                let g:key = keys(g:bmf_restore)
+                "echom "valeur bmf_sign_name"
+                "echom g:bmf_restore[g:key[0]].bmf_sign_name
+                if g:bmf_restore[g:key[0]].bmf_sign_name ==# 'sign_custom'
+                   let l:sign = g:bmf_restore[g:key[0]].bmf_sign
+                   let l:color = {"custom":{"fg_gui":g:bmf_restore[g:key[0]].bmf_color}} 
+                  " echom s:doSign(l:sign)
+                  " echom s:doColor(g:bmf_restore[g:key[0]].bmf_color)
+                   call bookmarkfancy#design(s:doSign(l:sign), l:color) 
+                endif
+                call add(g:bookmarkfancy_list, g:bmf_restore)
                 let l:isload = v:true
             endif
         endfor
