@@ -26,8 +26,8 @@ function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{
     let g:currentFile = expand("%:p")
     let g:currentStatus = 1 "status = 0: disabled, 1: enabled"
     let g:timeStamp = localtime()
-    let g:bookmarkfancy = {g:currentRow:
-                \              {'bmf_row':g:currentRow,
+    let g:bookmarkfancy = {
+                \ g:currentRow:{'bmf_row':g:currentRow,
                 \               'bmf_sign_id': a:bmfSignId,
                 \               'bmf_sign':bmfSign,
                 \               'bmf_sign_name':bmfSignName,
@@ -56,14 +56,11 @@ endfunction
 "  color [couleur -complete=list avec input] /!\
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! ListSymb(A, L, P)
-    let g:bmf_symb = ["","", "", "¶", "","","", "", "", "", "", "", "", "", "", "", ""]
     return  g:bmf_symb->sort()->uniq()
 endfunction
 
 function! ListColor(ArgLead, CmdLine, CursorPos)
-    "black","maroon" ,"green","olive","navy","purple","teal","silver","grey","red","lime","yellow","blue","fuschia","aqua","white"
     :redraw
-    let g:bmf_color = ["black","maroon" ,"green","olive","navy","purple","teal","silver","grey","red","lime","yellow","blue","fuschia","aqua","white"]
     return copy(g:bmf_color)->filter('v:val =~ "' . a:ArgLead . '"')->sort()
 endfunction
 
@@ -72,9 +69,7 @@ function! s:doSign(bmfSignSymbol)
 endfunction
 
 function! s:doColor(bmfColor)
-    "let g:idxName += 1
     let l:dic_color = {"black":"#000000","maroon":"#800000" ,"green":"#008000","olive":"#808000","navy":"#000080","purple":"#800080","teal":"#008080","silver":"#C0C0C0","grey":"#808080","red":"#FF0000","lime":"#00FF00","yellow":"#FFFF00","blue":"#0000FF","fuschia":"#FF00FF","aqua":"00FFFF","white":"#FFFFFF"}
-    "return {"custom_" .. g:idxName:{"fg_term":a:bmfColor,"fg_gui":l:dic_color[a:bmfColor]}}
     return {"custom":{"fg_term":a:bmfColor,"fg_gui":l:dic_color[a:bmfColor]}}
 endfunction
 
@@ -103,7 +98,12 @@ function! bookmarkfancy#new() "{{{
     call inputsave()
     let choiceColor = input("choice the color: ", "", "customlist,ListColor")
     call inputrestore()
-    call bookmarkfancy#design(s:doSign(choiceSign), s:doColor(choiceColor))
+     if(g:bmf_symb->index(choiceSign) ==# -1 || g:bmf_color->index(choiceColor) ==# -1)
+         echom " "
+         echom "Symbol or/and color unknown !"
+     else
+        call bookmarkfancy#design(s:doSign(choiceSign), s:doColor(choiceColor))
+     endif
 endfunction
 " }}}
 
@@ -161,7 +161,7 @@ function! bookmarkfancy#load(bmfFile) "{{{
     " liste des buffers en cours
     "  map(getbufinfo({'buflisted': 1}), 'v:val.name')
     "  avec filter
-    "  map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
+   "  map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
     let l:isload = v:false
     let g:bookmarkfancy_list = []
     let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
@@ -176,15 +176,10 @@ function! bookmarkfancy#load(bmfFile) "{{{
                 call add(l:bufnrlist,l:bnr)
                 let l:bmfSignId = sign_place(0, '', l:bmf_file.bmf_sign_name, l:bnr, {'lnum':l:row})
                 let g:bmf_restore = bookmarkfancy#restore(dict, l:bmfSignId, l:bnr)
-                "echom g:bmf_restore
                 let g:key = keys(g:bmf_restore)
-                "echom "valeur bmf_sign_name"
-                "echom g:bmf_restore[g:key[0]].bmf_sign_name
                 if g:bmf_restore[g:key[0]].bmf_sign_name ==# 'sign_custom'
                    let l:sign = g:bmf_restore[g:key[0]].bmf_sign
                    let l:color = {"custom":{"fg_gui":g:bmf_restore[g:key[0]].bmf_color}} 
-                  " echom s:doSign(l:sign)
-                  " echom s:doColor(g:bmf_restore[g:key[0]].bmf_color)
                    call bookmarkfancy#design(s:doSign(l:sign), l:color) 
                 endif
                 call add(g:bookmarkfancy_list, g:bmf_restore)
@@ -276,7 +271,6 @@ endfunction
 " return : true or false ;)
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#save() "{{{
-    "writefile /readfile
     const l:file = "bmf_bookmarks.sav"
     let l:directory = expand('%:p:h')
     if l:directory->filewritable()
@@ -285,7 +279,7 @@ function! bookmarkfancy#save() "{{{
             echom "Save File Error"
             return v:false
         else
-            echom "Save File Success"
+            echom "Save File Successfully!"
         endif
     endif
     return v:true
@@ -315,7 +309,7 @@ endfunction
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " function! bookmarkfancy#test()
-" Hum? test may be...
+" Hum? a test may be...
 " return:
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bookmarkfancy#test() "{{{

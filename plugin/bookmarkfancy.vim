@@ -4,7 +4,6 @@ endif
 let g:loaded_bookmarkfancy = 0
 let g:count = 0
 "structure caractère du bookmark ----------------------------------------------------------------------------
-"{1:'char_sign_1'}                                                          ⚑ ¶             
 
 let g:bmfsigns={
             \ 'bmf_underline':{'bmf_flag':'','bmf_bookmark':'','bmf_alt':'¶'},
@@ -22,11 +21,6 @@ let g:bmfcolors={
             \ "custom":{"fg_term":"white","fg_gui":"#FFFFFF"}
             \ }
 
-"if has("terminfo")
-"    "use fg_term
-"else
-"    "use fg_gui
-"endif
 if &term=~'xterm'
     let g:bmf_fg = "fg_gui"
 else
@@ -42,6 +36,8 @@ let g:bmfflavors ={
             \ "custom":{"bmf_sign":"@","bmf_color":g:bmfcolors["custom"][g:bmf_fg]}
             \ }
 let g:bookmarkfancy = {}
+let g:bmf_symb = ["","", "", "¶", "","","", "", "", "", "", "", "", "", "", "", ""]
+let g:bmf_color = ["black","maroon" ,"green","olive","navy","purple","teal","silver","grey","red","lime","yellow","blue","fuschia","aqua","white"]
 
 function! s:init()
     if g:loaded_bookmarkfancy ==# 0
@@ -64,10 +60,7 @@ function! s:BookmarkFancyDelete(line_number)
 endfunction
 
 function! BookMarkFancyFlavor(bmf_flavor = 'normal')
-    "let g:oldwildmode = &wildmode
-    "set wildmode = longest:full, full
     call bookmarkfancy#flavor(a:bmf_flavor)
-    "set wildmode = g:oldwildmode
 endfunction
 
 function! BookMarkFancyLoad(bmf_file)
@@ -142,7 +135,6 @@ endfunction
 command! BookMarkFancyCreate call BookMarkFancyCreate()
 command! -nargs=? -complete=customlist,ListFlavors BookMarkFancyFlavor call BookMarkFancyFlavor(<f-args>)
 command! -nargs=? -complete=customlist,LoadFile BookMarkFancyLoad call BookMarkFancyLoad(<f-args>)
-"command! -nargs=? -complete=file -bar BookMarkFancyLoad call BookMarkFancyLoad(<f-args>)
 command! BookMarkFancyNew call BookMarkFancyNew()
 command! BookMarkFancyRemove call BookMarkFancyRemove()
 command! BookMarkFancySave call BookMarkFancySave()
@@ -206,6 +198,4 @@ if has('vim_starting')
 else
     call s:init()
 endif
-
-" autocmd InsertLeave,BufWritePost  * call BookMarkFancyView()
 "}}}

@@ -3,7 +3,6 @@
 " initialisation des noms de sign aux saveurs (flavors)
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bmf_sign#init() "{{{
-    "echo "Sign initialized"
     call bmf_sign#highlights()
     for sufx in keys(copy(g:bmfflavors))->map('v:val')
         execute "sign define sign_" . sufx . "  texthl=BookmarkfancySign". sufx ." text=" . g:bmfflavors[sufx]["bmf_sign"]
@@ -37,7 +36,6 @@ function! bmf_sign#highlights(flavor_name = "normal") "{{{
         endif
         execute "highlight BookmarkfancySign"..sufx.." ctermfg=".. term_fg_flavor .." guifg=".. gui_fg_flavor ..
                     \ " ctermbg=".. term_bg_flavor .." guibg=".. gui_bg_flavor
-        " highlight default link BookmarkfancySign  BookmarkfancySignDefault
     endfor
 endfunction
 "}}}
@@ -49,7 +47,6 @@ endfunction
 " cas des ajout/suppression de ligne
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bmf_sign#sync(buf_name ='')
-    echom "--> appel bmf_sign#sync()"
     let g:buf = a:buf_name->empty()? bufname("%") : a:buf_name
     let g:sign_list = sign_getplaced()
     for signdic in g:sign_list
@@ -92,7 +89,6 @@ endfunction
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function! bmf_sign#unplace(bmf_sign_id = 0) abort "{{{
     try
-        "echom "blox try"
         exe "silent! call sign_unplace('*', {'id' : a:bmf_sign_id})"
     catch /.*/
         echom 'DEBUG :: ERREUR :( bmf_sign_id = ' .. a:bmf_sign_id
