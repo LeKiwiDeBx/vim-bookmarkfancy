@@ -27,7 +27,7 @@ function! bookmarkfancy#create(bmfSignId, bmf_sign = '', bmf_color = '') "{{{
     let g:currentStatus = 1 "status = 0: disabled, 1: enabled"
     let g:timeStamp = localtime()
     let g:bookmarkfancy = {
-                \ g:currentRow:{'bmf_row':g:currentRow,
+                \ g:currentRow:{'bmf_row' : g:currentRow,
                 \               'bmf_sign_id': a:bmfSignId,
                 \               'bmf_sign':bmfSign,
                 \               'bmf_sign_name':bmfSignName,
@@ -99,11 +99,14 @@ function! bookmarkfancy#new() "{{{
     let choiceColor = input("choice the color: ", "", "customlist,ListColor")
     call inputrestore()
      if(g:bmf_symb->index(choiceSign) ==# -1 || g:bmf_color->index(choiceColor) ==# -1)
-         echom " "
-         echom "Symbol or/and color unknown !"
+         echo "\r"
+         redraw
+         echom "Symbol or/and color not legal values!"
+         return v:false
      else
         call bookmarkfancy#design(s:doSign(choiceSign), s:doColor(choiceColor))
      endif
+     return v:true
 endfunction
 " }}}
 

@@ -53,6 +53,8 @@ function! BookMarkFancyCreate(bmf_flavors = 'normal')
                 \ g:bmfflavors[a:bmf_flavors]['bmf_sign'],
                 \ g:bmfflavors[a:bmf_flavors]['bmf_color'])
     eval g:bookmarkfancy_list->add(l:bmf_create)
+    call bmf_sign#sync()
+    call bookmarkfancy#view()
 endfunction
 
 function! s:BookmarkFancyDelete(line_number)
@@ -90,7 +92,9 @@ function! BookMarkFancyRemove(line_number = 0)
         echom "Ignore remove!"
         return
     endif
-    echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'sign remove at line ' .. a:line_number==#0?line("."):a:line_number : 'no action to do'
+    echom "\r"
+    redraw
+    echom bmf_sign#unplace(l:bmf_sign_id) ==# 0 ? 'Sign at line successfully removed: ' .. a:line_number==#0? 'Sign at line '.. line(".") .. ' successfully removed!' :a:line_number : 'no action to do'
     return 1
 endfunction
 
@@ -106,12 +110,14 @@ endfunction
 
 function! BookMarkFancyUpdate()
     let l:result = bookmarkfancy#update()
+    echo "\r"
+    redraw
     if l:result
         call bmf_sign#sync()
         call bookmarkfancy#view()
-        echom "Update bookmarkfancy successfully"
+        echom "Update bookmarkfancy text successfully"
     else
-        echom "Update bookmarkfancy failed"
+        echoerr "Update bookmarkfancy text failed"
     endif
 endfunction
 
@@ -161,7 +167,7 @@ if !hasmapto("<Plug>BookMarkFancyLoad")
     execute "nmap bl <Plug>BookMarkFancyLoad"
 endif
 " bn New
-execute "nnoremap <Plug>BookMarkFancyNew :BookMarkFancyNew<space><C-Z><C-Z>"
+execute "nnoremap <silent> <Plug>BookMarkFancyNew :BookMarkFancyNew<CR>"
 if !hasmapto("<Plug>BookMarkFancyNew")
     execute "nmap bn <Plug>BookMarkFancyNew"
 endif
