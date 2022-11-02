@@ -129,7 +129,7 @@ endfunction
 
 " functions annexes {{{
 function! ListFlavors(A,L,P)
-    return keys(g:bmfflavors)
+    return keys(g:bmfflavors)->sort()
 endfunction
 
 function! LoadFile(A,L,P)
@@ -167,7 +167,7 @@ if !hasmapto("<Plug>BookMarkFancyLoad")
     execute "nmap bl <Plug>BookMarkFancyLoad"
 endif
 " bn New
-execute "nnoremap <silent> <Plug>BookMarkFancyNew :BookMarkFancyNew<CR>"
+execute "nnoremap <silent> <Plug>BookMarkFancyNew :BookMarkFancyNew<space><CR>"
 if !hasmapto("<Plug>BookMarkFancyNew")
     execute "nmap bn <Plug>BookMarkFancyNew"
 endif

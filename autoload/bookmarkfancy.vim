@@ -172,6 +172,16 @@ function! bookmarkfancy#load(bmfFile) "{{{
     let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0])
     for dict in l:bookmarkfancy_sav_list
         let [l:bmf_file_key, l:bmf_file] =[keys(dict)[0], values(dict)[0]]
+        " TODO
+        " if l:bmf_file is not current file passer jusqu'au dernier endfor (continue) car 1 fichier bookmark par fichier appelant
+        " compare sur expand("%:p:r") path+fichier sans extension expand("%:p:r")
+        echom l:bmf_file.bmf_file .. "\n"
+        if l:bmf_file.bmf_file ==# expand("%:p") 
+            echom 'OK file save' .. l:bmf_file.bmf_file
+        else
+            echom 'NOK'
+            continue
+        endif    
         for buf_name in l:buf_list
             if buf_name ==# l:bmf_file.bmf_file
                 let l:bnr = bufnr(l:bmf_file.bmf_file)
@@ -277,12 +287,15 @@ function! bookmarkfancy#save() "{{{
     const l:file = "bmf_bookmarks.sav"
     let l:directory = expand('%:p:h')
     if l:directory->filewritable()
-        let l:file_save = l:directory."/".l:file
+        "let l:file_save = l:directory."/".l:file
+        "TODO
+        "enregistrer que les bookmarks du fichier en cours
+        let l:file_save = expand('%:p:r') .. '.sav' "un fichier de bookmarks par fichier concerné
         if writefile([json_encode(copy(g:bookmarkfancy_list))], l:file_save, "s") ==# -1
-            echom "Save File Error"
+            echom "Error unable to write bookmarks file "..l:file_save
             return v:false
         else
-            echom "Save File Successfully!"
+            echom "All bookmarks are successfully written to the file: " .. l:file_save
         endif
     endif
     return v:true
