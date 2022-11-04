@@ -169,17 +169,15 @@ function! bookmarkfancy#load(bmfFile) "{{{
     let g:bookmarkfancy_list = []
     let l:buf_list = map(getbufinfo({'buflisted': 1}), 'v:val.name')
     let bufnrlist = []
-    let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0])
+    try
+        let l:bookmarkfancy_sav_list = eval(readfile(a:bmfFile)[0])
     for dict in l:bookmarkfancy_sav_list
         let [l:bmf_file_key, l:bmf_file] =[keys(dict)[0], values(dict)[0]]
-        " TODO
-        " if l:bmf_file is not current file passer jusqu'au dernier endfor (continue) car 1 fichier bookmark par fichier appelant
-        " compare sur expand("%:p:r") path+fichier sans extension expand("%:p:r")
         echom l:bmf_file.bmf_file .. "\n"
         if l:bmf_file.bmf_file ==# expand("%:p") 
-            echom 'OK file save' .. l:bmf_file.bmf_file
+            echom 'OK loading bookmarks of file: ' .. l:bmf_file.bmf_file
         else
-            echom 'NOK'
+            echom 'ERROR loading bookmarks of file'
             continue
         endif    
         for buf_name in l:buf_list
@@ -201,6 +199,11 @@ function! bookmarkfancy#load(bmfFile) "{{{
         endfor
     endfor
     return l:isload
+    catch 
+        echom "Error with readfile(), may be not file exists."
+    finally
+    return l:isload
+    endtry
 endfunction
 " }}}
 
@@ -283,19 +286,32 @@ endfunction
 " sauvegarde les bookmarks
 " return : true or false ;)
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function! Only_me(idx, val) "{{{
+  let l:file_local = expand('%:p')
+  for dict in values(a:val)
+    "echom dict.bmf_file
+    return dict.bmf_file ==# l:file_local
+  endfor
+endfunction
+"}}}
+"
 function! bookmarkfancy#save() "{{{
-    const l:file = "bmf_bookmarks.sav"
+    " const l:file = "bmf_bookmarks.sav"
     let l:directory = expand('%:p:h')
     if l:directory->filewritable()
         "let l:file_save = l:directory."/".l:file
         "TODO
         "enregistrer que les bookmarks du fichier en cours
-        let l:file_save = expand('%:p:r') .. '.sav' "un fichier de bookmarks par fichier concerné
-        if writefile([json_encode(copy(g:bookmarkfancy_list))], l:file_save, "s") ==# -1
+        let l:file_save = expand('%:p') .. '.bmk' "un fichier de bookmarks par fichier concerné
+        let l:bmf_list_filter = copy(g:bookmarkfancy_list)->filter(function('Only_me'))  
+"        echom "list_filter: "
+"        echom l:bmf_list_filter
+        "if writefile([json_encode(copy(g:bookmarkfancy_list))], l:file_save, "s") ==# -1
+        if writefile([json_encode(copy(l:bmf_list_filter))], l:file_save, "s") ==# -1
             echom "Error unable to write bookmarks file "..l:file_save
             return v:false
         else
-            echom "All bookmarks are successfully written to the file: " .. l:file_save
+            echom "Bookmarks from current file are successfully written to: " .. l:file_save
         endif
     endif
     return v:true

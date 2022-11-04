@@ -133,7 +133,8 @@ function! ListFlavors(A,L,P)
 endfunction
 
 function! LoadFile(A,L,P)
-    return globpath(&rtp, "**/*\.sav", 0, 1)->sort()->uniq()
+    return globpath(expand("%:p:h"),"*\.bmk",0,1)
+"    return globpath(&rtp, "**/*\.bmk", 0, 1)->sort()->uniq()
 endfunction
 "}}}
 
